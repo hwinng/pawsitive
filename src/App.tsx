@@ -4,7 +4,6 @@ import './index.css'
 import './App.css'
 
 const App: React.FC = () => {
-
   // useEffect(() => {
   //   fetch('./docs_list')
   //     .then((res) => res.json())
