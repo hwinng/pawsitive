@@ -65,8 +65,8 @@
         }
       }
     ],
-    "react-hooks/rules-of-hooks": "error",
-    "sort-keys-fix/sort-keys-fix": "warn"
+    "react-hooks/rules-of-hooks": "error"
+    // "sort-keys-fix/sort-keys-fix": "warn"
   },
   "settings": {
     "import/parsers": {

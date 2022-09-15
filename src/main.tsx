@@ -1,18 +1,27 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import { Provider } from 'react-redux'
 
-import App from './App'
+import App from './app/App'
+import { store } from './app/store'
 
 const root = ReactDOM.createRoot(document.getElementById('root')!)
 
+function AppWrapper() {
+  return (
+    <Provider store={store}>
+      <App />
+    </Provider>
+  )
+}
 if (process.env.NODE_ENV === 'development') {
   import('../mocks/browser')
     .then(({ worker }) => {
       worker.start()
     })
     .then(() => {
-      root.render(<App />)
+      root.render(<AppWrapper />)
     })
 } else {
-  root.render(<App />)
+  root.render(<AppWrapper />)
 }
