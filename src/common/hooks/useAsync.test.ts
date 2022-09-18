@@ -1,8 +1,8 @@
 /* eslint-disable prettier/prettier */
 import { renderHook, act } from '@testing-library/react'
 
-import { Status } from '../constants/enums'
-import type { DeferredPromise, HttpError } from '../constants/types'
+import { Status } from '../types/enums'
+import type { DeferredPromise, HttpError } from '../types/types'
 
 import { useAsync } from './useAsync'
 

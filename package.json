@@ -19,8 +19,7 @@
     "validate": "./scripts/validate"
   },
   "dependencies": {
-    "@ahaui/css": "^2.0.5",
-    "@ahaui/react": "^2.0.3",
+    "@mswjs/data": "^0.10.2",
     "@reduxjs/toolkit": "^1.8.5",
     "faker": "^5.5.3",
     "msw": "^0.47.2",
@@ -31,8 +30,7 @@
     "react-redux": "^8.0.2",
     "react-router": "^6.4.0",
     "react-router-dom": "^6.4.0",
-    "styled-components": "^5.3.5",
-    "uuid": "^9.0.0"
+    "styled-components": "^5.3.5"
   },
   "devDependencies": {
     "@testing-library/dom": "^8.17.1",
@@ -43,7 +41,6 @@
     "@types/react": "^18.0.19",
     "@types/react-dom": "^18.0.6",
     "@types/testing-library__jest-dom": "^5.14.5",
-    "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.37.0",
     "@typescript-eslint/parser": "^5.37.0",
     "@vitejs/plugin-react": "^2.1.0",

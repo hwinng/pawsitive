@@ -1,7 +1,7 @@
 import * as React from 'react'
 
-import { Status } from '../constants/enums'
-import type { HttpError } from '../constants/types'
+import { Status } from '../types/enums'
+import type { HttpError } from '../types/types'
 
 interface AsyncState {
   status: Status

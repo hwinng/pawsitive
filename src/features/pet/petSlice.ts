@@ -3,8 +3,8 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { normalize, schema } from 'normalizr'
 
 import type { RootState } from '../../app/store'
-import { PetSize, PetType, Status } from '../../constants/enums'
-import type { HttpError } from '../../constants/types'
+import { PetSize, PetType, Status } from '../../common/types/enums'
+import type { HttpError } from '../../common/types/types'
 
 // Define a type for the slice state
 interface Pet {

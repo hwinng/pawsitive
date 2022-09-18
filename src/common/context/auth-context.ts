@@ -1,6 +1,6 @@
 import React from 'react'
 
-import type { HttpError, ReducerAction } from '../constants/types'
+import type { HttpError, ReducerAction } from '../types/types'
 
 type AuthState = {
   isAuthenticated: boolean
@@ -16,6 +16,7 @@ enum AuthActionType {
   LOGOUT,
   AUTH_ERROR,
 }
+
 const AuthContext = React.createContext<
   | {
       state: AuthState
@@ -23,7 +24,6 @@ const AuthContext = React.createContext<
     }
   | undefined
 >(undefined)
-AuthContext.displayName = 'AuthContext'
 
 const defaultAuthState: AuthState = {
   isAuthenticated: false,
@@ -32,6 +32,7 @@ const defaultAuthState: AuthState = {
   error: null,
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function authReducer(
   state: AuthState,
   action: ReducerAction<AuthActionType, any>
@@ -66,11 +67,4 @@ function useAuth() {
   return context
 }
 
-function AuthProvider({children}: React.ReactNode ) {
-    return (
-
-    )
-}
-
-
-export { useAuth, authReducer, AuthContext }
+export { useAuth }
