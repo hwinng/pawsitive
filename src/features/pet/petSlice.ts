@@ -4,7 +4,7 @@ import { normalize, schema } from 'normalizr'
 
 import type { RootState } from '../../app/store'
 import { PetSize, PetType, Status } from '../../constants/enums'
-import type { HttpError, Pet } from '../../constants/types'
+import type { HttpError } from '../../constants/types'
 
 // Define a type for the slice state
 interface Pet {
@@ -51,14 +51,11 @@ export const petSlice = createSlice({
   },
 })
 
-console.log('petslice', petSlice)
-
 // Extract and export each action creator by name
 export const { loadPets } = petSlice.actions
-console.log(loadPets([]))
 
 // Other code such as selectors can use the imported `RootState` type
-export const selectPet = (state: RootState) => state.pet.pet
+export const selectPet = (state: RootState) => state.pet
 
 // Export the reducer, either as a default or named export
 export default petSlice.reducer

@@ -14,4 +14,15 @@ type HttpError = {
   message: string
 }
 
-export type { Pet, HttpError }
+type DeferredPromise<DeferType> = {
+  resolve: (value: DeferType) => void
+  reject: (value: unknown) => void
+  promise: Promise<DeferType>
+}
+
+type ReducerAction<T, K> = {
+  type: T
+  payload: K
+}
+
+export type { Pet, HttpError, DeferredPromise, ReducerAction }

@@ -1,14 +1,29 @@
 import React from 'react'
 import './App.css'
 
-import { useAppSelector } from './redux-hook'
+const body = {
+  username: 'Phillip',
+}
 
 const App: React.FC = () => {
-  const pet = useAppSelector((state) => state.pet)
-  console.log({ pet })
+  function handleRegister() {
+    window
+      .fetch('/register', {
+        method: 'POST',
+        body: JSON.stringify(body),
+        headers: {
+          'content-type': 'application/json',
+        },
+      })
+      .then(async (response) => {
+        const data = await response.json()
+        console.log({ data })
+      })
+  }
+
   return (
     <main data-testid="App" className="App">
-      Pet Mart
+      <button onClick={handleRegister}>Register</button>
     </main>
   )
 }

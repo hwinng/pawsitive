@@ -12,8 +12,9 @@ enum PetSize {
 enum Status {
   IDLE = 'IDLE',
   PENDING = 'PENDING',
-  RESOLVE = 'RESOLVE',
-  REJECT = 'REJECT',
+  RESOLVED = 'RESOLVED',
+  REJECTED = 'REJECTED',
+  RESET = 'RESET',
 }
 
 export { PetType, PetSize, Status }
