@@ -21,6 +21,14 @@ const petNames = [
   'Snow',
   'Cotton',
   'Dusty',
+  'Max',
+  'Milo',
+  'Buddy',
+  'Bear',
+  'Leo',
+  'Duke',
+  'Teddy',
+  'Tucker',
 ]
 const petTypes = Object.values(PetType)
 const petSizes = Object.values(PetSize)
