@@ -1,5 +1,11 @@
 import type { PetType, PetSize } from './enums'
-
+interface LoginBody {
+  username: string
+}
+interface LoginResponse {
+  username: string
+  firstName: string
+}
 type Pet = {
   ownerId: string
   name: number
@@ -25,4 +31,11 @@ type ReducerAction<T, K> = {
   payload: K
 }
 
-export type { Pet, HttpError, DeferredPromise, ReducerAction }
+export type {
+  Pet,
+  HttpError,
+  DeferredPromise,
+  ReducerAction,
+  LoginResponse,
+  LoginBody,
+}

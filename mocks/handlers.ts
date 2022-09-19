@@ -1,38 +1,36 @@
+import { nanoid } from '@reduxjs/toolkit'
 import { rest } from 'msw'
-import { v4 as uuidv4 } from 'uuid'
 
+import type { LoginBody, LoginResponse } from '../src/common/types/types'
+
+import { db, serializePet } from './seeding'
+
+// Add an extra delay to all endpoints, so loading spinners show up.
+const ARTIFICIAL_DELAY_MS = 2000
+
+// AUTH APIs
 const authHandlers = [
-  rest.post('/register', async (req, res, ctx) => {
-    const reqBody = await req.json()
+  rest.post<LoginBody, LoginResponse>('/login', async (req, res, ctx) => {
+    const { username } = await req.json()
     const auth = {
-      username: reqBody?.username,
-      userId: uuidv4(),
+      username,
+      firstName: 'Phillip',
+      token: nanoid(),
     }
-    if (reqBody) {
-      localStorage.setItem('auth', JSON.stringify(auth))
-      return res(
-        ctx.status(200),
-        ctx.json({
-          data: {
-            auth,
-          },
-        })
-      )
-    }
+    localStorage.setItem('auth', JSON.stringify(auth))
     return res(
-      ctx.status(503),
+      ctx.delay(ARTIFICIAL_DELAY_MS),
       ctx.json({
-        data: {
-          message: 'Something wrongs!',
-        },
+        username,
+        firstName: 'Phillip',
       })
     )
   }),
-
-  rest.post('/login', (req, res, ctx) => {
+  rest.get('/whoisme', (req, res, ctx) => {
     const authString = localStorage.getItem('auth')
     if (!authString) {
       return res(
+        ctx.delay(ARTIFICIAL_DELAY_MS),
         ctx.status(401),
         ctx.json({
           data: {
@@ -41,26 +39,23 @@ const authHandlers = [
         })
       )
     }
-
     const auth = JSON.parse(authString)
     return res(
-      ctx.status(200),
+      ctx.delay(ARTIFICIAL_DELAY_MS),
       ctx.json({
         data: {
-          auth,
+          token: auth.token,
         },
       })
     )
   }),
   rest.post('/logout', (req, res, ctx) => {
-    // check if userId exists in localStorage
-    const authString = localStorage.getItem('userId')
+    const authString = localStorage.getItem('auth')
     if (authString) {
       localStorage.removeItem('auth')
     }
-
     return res(
-      ctx.status(200),
+      ctx.delay(ARTIFICIAL_DELAY_MS),
       ctx.json({
         data: 'Logout successfully',
       })
@@ -68,4 +63,81 @@ const authHandlers = [
   }),
 ]
 
-export const handlers = [...authHandlers]
+// PET APIs
+const petHandlers = [
+  rest.get('/api/pets', function (req, res, ctx) {
+    const pets = db.pet.getAll().map(serializePet)
+    return res(ctx.delay(ARTIFICIAL_DELAY_MS), ctx.json(pets))
+  }),
+  rest.post('/api/pet', async function (req, res, ctx) {
+    const data = await req.json()
+
+    if (data.content === 'error') {
+      return res(
+        ctx.delay(ARTIFICIAL_DELAY_MS),
+        ctx.status(500),
+        ctx.json('Server error saving this post!')
+      )
+    }
+    // data.date = new Date().toISOString()
+    const owner = db.owner.findFirst({ where: { id: { equals: data.owner } } })
+    data.owner = owner
+
+    const pet = db.pet.create(data)
+    return res(ctx.delay(ARTIFICIAL_DELAY_MS), ctx.json(serializePet(pet)))
+  }),
+  rest.get('/api/pet/:petId', function (req, res, ctx) {
+    const pet = db.pet.findFirst({
+      where: { id: { equals: String(req.params.petId) } },
+    })
+    return res(ctx.delay(ARTIFICIAL_DELAY_MS), ctx.json(serializePet(pet)))
+  }),
+  rest.patch('/api/pet/:petId', async (req, res, ctx) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { id, ...data } = await req.json()
+    const updatedPet = db.pet.update({
+      where: { id: { equals: String(req.params.petId) } },
+      data,
+    })
+    return res(
+      ctx.delay(ARTIFICIAL_DELAY_MS),
+      ctx.json(serializePet(updatedPet))
+    )
+  }),
+]
+
+// OWNER APIs
+const ownerHandlers = [
+  rest.get('/api/owners', function (req, res, ctx) {
+    return res(ctx.delay(ARTIFICIAL_DELAY_MS), ctx.json(db.owner.getAll()))
+  }),
+  rest.post('/api/owner', async function (req, res, ctx) {
+    const data = await req.json()
+    if (data.content === 'error') {
+      return res(
+        ctx.delay(ARTIFICIAL_DELAY_MS),
+        ctx.status(500),
+        ctx.json('Server error saving this post!')
+      )
+    }
+    const owner = db.owner.create(data)
+    return res(ctx.delay(ARTIFICIAL_DELAY_MS), ctx.json(owner))
+  }),
+  rest.get('/api/owner/:ownerId', function (req, res, ctx) {
+    const owner = db.owner.findFirst({
+      where: { id: { equals: String(req.params.ownerId) } },
+    })
+    return res(ctx.delay(ARTIFICIAL_DELAY_MS), ctx.json(owner))
+  }),
+  rest.patch('/api/owner/:ownerId', async (req, res, ctx) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { id, ...data } = await req.json()
+    const updatedOwner = db.owner.update({
+      where: { id: { equals: String(req.params.ownerId) } },
+      data,
+    })
+    return res(ctx.delay(ARTIFICIAL_DELAY_MS), ctx.json(updatedOwner))
+  }),
+]
+
+export const handlers = [...authHandlers, ...ownerHandlers, ...petHandlers]
