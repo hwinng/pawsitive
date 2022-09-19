@@ -103,7 +103,7 @@ const createOwnerData = () => {
   const firstName = String(faker.name.firstName('male'))
   const lastName = faker.name.lastName('male')
   const email = faker.internet.email(firstName, lastName, 'gotitapp')
-  const phoneNumber = faker.phone()
+  const phoneNumber = faker.phone.phoneNumber()
   return {
     firstName,
     lastName,
