@@ -1,6 +1,4 @@
 import { faker } from '@faker-js/faker'
-import { factory, oneOf, primaryKey, nullable } from '@mswjs/data'
-import { nanoid } from '@reduxjs/toolkit'
 import seedrandom from 'seedrandom'
 
 import {
@@ -10,7 +8,7 @@ import {
   dogBreeds,
   petSizes,
 } from '../constants/pet'
-import type { OwnerMswFactory, PetMswFactory } from '../types/common'
+import type { HttpError, OwnerMswFactory } from '../types/common'
 import { PetType } from '../types/common'
 
 /**
@@ -48,28 +46,6 @@ const randomFromArray = (array: Array<any>) => {
   const index = getRandomInt(0, array.length - 1)
   return array[index]
 }
-
-/* MSW Data Model Setup */
-const mswdb = factory({
-  owner: {
-    id: primaryKey(nanoid),
-    firstName: String,
-    lastName: String,
-    email: String,
-    name: String,
-    phoneNumber: String,
-  },
-  pet: {
-    id: primaryKey(nanoid),
-    name: String,
-    type: String,
-    breed: String,
-    size: String,
-    image: nullable(String),
-    owner: oneOf('owner'),
-  },
-})
-
 // Utility function for creating a fake owner data object
 const createOwnerData = () => {
   const firstName = String(faker.name.firstName('male'))
@@ -108,7 +84,7 @@ const createPetData = async (owner: OwnerMswFactory) => {
 }
 
 // Utility function for serializing owner id in mock response
-const serializePet = (pet: PetMswFactory) => ({
+const serializePet = (pet: any) => ({
   ...pet,
   owner: pet.owner.id,
 })
@@ -132,4 +108,27 @@ const randomPetImage = async (
   return res.url
 }
 
-export { mswdb, serializePet, createOwnerData, createPetData, randomPetImage }
+const successJson = (data: unknown) => {
+  return {
+    data,
+  }
+}
+
+const errorJson = (
+  message: string
+): {
+  error: HttpError
+} => {
+  return {
+    error: { message },
+  }
+}
+
+export {
+  serializePet,
+  createOwnerData,
+  createPetData,
+  randomPetImage,
+  successJson,
+  errorJson,
+}
