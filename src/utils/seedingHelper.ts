@@ -1,7 +1,11 @@
 import { nanoid } from '@reduxjs/toolkit'
 
 import { dexieDb } from '../../db'
-import { createOwnerData, createPetData, serializePet } from '../mocks/seeding'
+import {
+  createOwnerData,
+  createPetData,
+  serializePet,
+} from '../mocks/mockHelper'
 import type { OwnerDexieModel, PetDexieModel } from '../types/common'
 
 // eslint-disable-next-line prettier/prettier
