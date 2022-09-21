@@ -64,18 +64,19 @@ interface PetDexieModel {
   type: string
   breed: string
   size: string
+  image?: string
   owner: string
 }
 
 enum PetType {
-  CAT,
-  DOG,
+  CAT = 'CAT',
+  DOG = 'DOG',
 }
 
 enum PetSize {
-  SMALL,
-  MEDIUM,
-  LARGE,
+  SMALL = 'SMALL',
+  MEDIUM = 'MEDIUM',
+  LARGE = 'LARGE',
 }
 
 enum Status {

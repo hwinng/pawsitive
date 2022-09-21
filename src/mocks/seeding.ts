@@ -1,6 +1,6 @@
+import { faker } from '@faker-js/faker'
 import { factory, oneOf, primaryKey, nullable } from '@mswjs/data'
 import { nanoid } from '@reduxjs/toolkit'
-import faker from 'faker'
 import seedrandom from 'seedrandom'
 
 import {
@@ -75,7 +75,7 @@ const createOwnerData = () => {
   const firstName = String(faker.name.firstName('male'))
   const lastName = String(faker.name.lastName('male'))
   const email = String(faker.internet.email(firstName, lastName, 'gotitapp'))
-  const phoneNumber = String(faker.phone.phoneNumber())
+  const phoneNumber = String(faker.phone.number())
   return {
     firstName,
     lastName,
@@ -107,4 +107,23 @@ const serializePet = (pet: PetMswFactory) => ({
   owner: pet.owner.id,
 })
 
-export { mswdb, serializePet, createOwnerData, createPetData }
+const randomPetImage = async (
+  key: string,
+  options: {
+    width: number
+    height: number
+  } = {
+    width: 320,
+    height: 240,
+  }
+) => {
+  const res = await fetch(
+    `https://loremflickr.com/${options.width}/${options.height}/${key}`
+  )
+  if (!res.ok) {
+    return ''
+  }
+  return res.url
+}
+
+export { mswdb, serializePet, createOwnerData, createPetData, randomPetImage }

@@ -10,7 +10,7 @@ export default async function dataSeedingHelper(option: { noOwners: number, petP
     petPerOwner: 1,
   }
 ) {
-  if (localStorage.getItem('dataSeeded')) {
+  if (localStorage.getItem('seeded')) {
     return
   }
 
@@ -50,5 +50,5 @@ export default async function dataSeedingHelper(option: { noOwners: number, petP
       console.error({ error })
     })
 
-  localStorage.setItem('dataSeeded', JSON.stringify(true))
+  localStorage.setItem('seeded', JSON.stringify(true))
 }
