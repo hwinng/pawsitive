@@ -14,7 +14,7 @@ const camelcase = require('camelcase')
 // http://facebook.github.io/jest/docs/en/webpack.html
 
 module.exports = {
-  process(_src: any, filename: string) {
+  process(src, filename) {
     const assetFilename = JSON.stringify(path.basename(filename))
 
     if (filename.match(/\.svg$/)) {
