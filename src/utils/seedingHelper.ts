@@ -5,7 +5,8 @@ import { createOwnerData, createPetData, serializePet } from '../mocks/seeding'
 import type { OwnerDexieModel, PetDexieModel } from '../types/common'
 
 // eslint-disable-next-line prettier/prettier
-export default async function dataSeedingHelper(option: { noOwners: number, petPerOwner: number } = {
+export default async function dataSeedingHelper(
+  option: { noOwners: number; petPerOwner: number } = {
     noOwners: 5,
     petPerOwner: 1,
   }
@@ -19,14 +20,14 @@ export default async function dataSeedingHelper(option: { noOwners: number, petP
   let pets: PetDexieModel[] = []
 
   for (let i = 0; i < option.noOwners; i++) {
-    let owner = createOwnerData()
+    let owner = await createOwnerData()
     let ownerWithId = {
       id: nanoid(),
       ...owner,
     }
     owners.push(ownerWithId)
     for (let j = 0; j < option.petPerOwner; j++) {
-      let pet = createPetData(ownerWithId)
+      let pet = await createPetData(ownerWithId)
       let petWithId = {
         id: nanoid(),
         ...pet,
@@ -44,9 +45,6 @@ export default async function dataSeedingHelper(option: { noOwners: number, petP
     })
     .then(() => {})
     .catch((error) => {
-      //
-      // Transaction Failed
-      //
       console.error({ error })
     })
 

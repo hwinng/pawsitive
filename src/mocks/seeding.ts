@@ -76,18 +76,24 @@ const createOwnerData = () => {
   const lastName = String(faker.name.lastName('male'))
   const email = String(faker.internet.email(firstName, lastName, 'gotitapp'))
   const phoneNumber = String(faker.phone.number())
-  return {
+  return Promise.resolve({
     firstName,
     lastName,
     name: `${firstName} ${lastName}`,
     email,
     phoneNumber,
-  }
+  })
 }
 
 // Utility function for creating a fake pet data object
-const createPetData = (owner: OwnerMswFactory) => {
+const createPetData = async (owner: OwnerMswFactory) => {
   let type = randomFromArray(petTypes)
+  let image: string
+  if (type === String(PetType.CAT)) {
+    image = await randomPetImage('cat')
+  } else {
+    image = await randomPetImage('dog')
+  }
   return {
     name: randomFromArray(petNames),
     type,
@@ -96,7 +102,7 @@ const createPetData = (owner: OwnerMswFactory) => {
         ? randomFromArray(catBreeds)
         : randomFromArray(dogBreeds),
     size: randomFromArray(petSizes),
-    image: '',
+    image,
     owner,
   }
 }
