@@ -1,26 +1,11 @@
 import type { Table } from 'dexie'
 import Dexie from 'dexie'
 
-export interface OwnerModel {
-  id: string
-  firstName: string
-  lastName: string
-  email: string
-  name: string
-  phoneNumber: string
-}
+import type { OwnerDexieModel, PetDexieModel } from '../src/types/common'
 
-export interface PetModel {
-  id: string
-  name: string
-  type: string
-  breed: string
-  size: string
-  owner: string
-}
 export class MySubClassedDexie extends Dexie {
-  pet!: Table<PetModel>
-  owner!: Table<OwnerModel>
+  pet!: Table<PetDexieModel>
+  owner!: Table<OwnerDexieModel>
 
   constructor() {
     super('myDatabase')
