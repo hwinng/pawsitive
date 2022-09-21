@@ -8,7 +8,7 @@ import {
   dogBreeds,
   petSizes,
 } from '../constants/pet'
-import type { OwnerMswFactory } from '../types/common'
+import type { HttpError, OwnerMswFactory } from '../types/common'
 import { PetType } from '../types/common'
 
 /**
@@ -108,4 +108,27 @@ const randomPetImage = async (
   return res.url
 }
 
-export { serializePet, createOwnerData, createPetData, randomPetImage }
+const successJson = (data: unknown) => {
+  return {
+    data,
+  }
+}
+
+const errorJson = (
+  message: string
+): {
+  error: HttpError
+} => {
+  return {
+    error: { message },
+  }
+}
+
+export {
+  serializePet,
+  createOwnerData,
+  createPetData,
+  randomPetImage,
+  successJson,
+  errorJson,
+}
