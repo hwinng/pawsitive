@@ -5,10 +5,6 @@ import seedrandom from 'seedrandom'
 
 import { PetSize, PetType } from '../src/common/types/enums'
 
-// Number of owners and pets seeding config
-const NO_OWNERS = 5
-const PETS_PER_OWNER = 1
-
 // Pet constant values
 const petNames = [
   'Charlie',
@@ -86,7 +82,7 @@ const randomFromArray = (array) => {
 }
 
 /* MSW Data Model Setup */
-const db = factory({
+const mswdb = factory({
   owner: {
     id: primaryKey(nanoid),
     firstName: String,
@@ -109,9 +105,9 @@ const db = factory({
 // Utility function for creating a fake owner data object
 const createOwnerData = () => {
   const firstName = String(faker.name.firstName('male'))
-  const lastName = faker.name.lastName('male')
-  const email = faker.internet.email(firstName, lastName, 'gotitapp')
-  const phoneNumber = faker.phone.phoneNumber()
+  const lastName = String(faker.name.lastName('male'))
+  const email = String(faker.internet.email(firstName, lastName, 'gotitapp'))
+  const phoneNumber = String(faker.phone.phoneNumber())
   return {
     firstName,
     lastName,
@@ -137,19 +133,10 @@ const createPetData = (owner) => {
   }
 }
 
-// Create an initial set of owners and pets
-for (let i = 0; i < NO_OWNERS; i++) {
-  const owner = db.owner.create(createOwnerData())
-  for (let j = 0; j < PETS_PER_OWNER; j++) {
-    const newPet = createPetData(owner)
-    db.pet.create(newPet)
-  }
-}
-
 // Utility function for serializing owner id in mock response
 const serializePet = (pet) => ({
   ...pet,
   owner: pet.owner.id,
 })
 
-export { db, serializePet }
+export { mswdb, serializePet, mswDataSeeding, createOwnerData, createPetData }

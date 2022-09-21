@@ -3,7 +3,7 @@ import { rest } from 'msw'
 
 import type { LoginBody, LoginResponse } from '../src/common/types/types'
 
-import { db, serializePet } from './seeding'
+import { mswdb, serializePet } from './seeding'
 
 // Add an extra delay to all endpoints, so loading spinners show up.
 const ARTIFICIAL_DELAY_MS = 2000
@@ -66,7 +66,7 @@ const authHandlers = [
 // PET APIs
 const petHandlers = [
   rest.get('/api/pets', function (req, res, ctx) {
-    const pets = db.pet.getAll().map(serializePet)
+    const pets = mswdb.pet.getAll().map(serializePet)
     return res(ctx.delay(ARTIFICIAL_DELAY_MS), ctx.json(pets))
   }),
   rest.post('/api/pet', async function (req, res, ctx) {
@@ -80,14 +80,16 @@ const petHandlers = [
       )
     }
     // data.date = new Date().toISOString()
-    const owner = db.owner.findFirst({ where: { id: { equals: data.owner } } })
+    const owner = mswdb.owner.findFirst({
+      where: { id: { equals: data.owner } },
+    })
     data.owner = owner
 
-    const pet = db.pet.create(data)
+    const pet = mswdb.pet.create(data)
     return res(ctx.delay(ARTIFICIAL_DELAY_MS), ctx.json(serializePet(pet)))
   }),
   rest.get('/api/pet/:petId', function (req, res, ctx) {
-    const pet = db.pet.findFirst({
+    const pet = mswdb.pet.findFirst({
       where: { id: { equals: String(req.params.petId) } },
     })
     return res(ctx.delay(ARTIFICIAL_DELAY_MS), ctx.json(serializePet(pet)))
@@ -95,7 +97,7 @@ const petHandlers = [
   rest.patch('/api/pet/:petId', async (req, res, ctx) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { id, ...data } = await req.json()
-    const updatedPet = db.pet.update({
+    const updatedPet = mswdb.pet.update({
       where: { id: { equals: String(req.params.petId) } },
       data,
     })
@@ -109,7 +111,7 @@ const petHandlers = [
 // OWNER APIs
 const ownerHandlers = [
   rest.get('/api/owners', function (req, res, ctx) {
-    return res(ctx.delay(ARTIFICIAL_DELAY_MS), ctx.json(db.owner.getAll()))
+    return res(ctx.delay(ARTIFICIAL_DELAY_MS), ctx.json(mswdb.owner.getAll()))
   }),
   rest.post('/api/owner', async function (req, res, ctx) {
     const data = await req.json()
@@ -120,11 +122,11 @@ const ownerHandlers = [
         ctx.json('Server error saving this post!')
       )
     }
-    const owner = db.owner.create(data)
+    const owner = mswdb.owner.create(data)
     return res(ctx.delay(ARTIFICIAL_DELAY_MS), ctx.json(owner))
   }),
   rest.get('/api/owner/:ownerId', function (req, res, ctx) {
-    const owner = db.owner.findFirst({
+    const owner = mswdb.owner.findFirst({
       where: { id: { equals: String(req.params.ownerId) } },
     })
     return res(ctx.delay(ARTIFICIAL_DELAY_MS), ctx.json(owner))
@@ -132,7 +134,7 @@ const ownerHandlers = [
   rest.patch('/api/owner/:ownerId', async (req, res, ctx) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { id, ...data } = await req.json()
-    const updatedOwner = db.owner.update({
+    const updatedOwner = mswdb.owner.update({
       where: { id: { equals: String(req.params.ownerId) } },
       data,
     })
