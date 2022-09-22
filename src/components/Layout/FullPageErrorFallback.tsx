@@ -1,4 +1,4 @@
-import * as colors from '../../constants/style'
+import * as colors from '../../constants/colors'
 
 function FullPageErrorFallback(error: { error: Error }) {
   return (

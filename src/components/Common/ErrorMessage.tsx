@@ -1,6 +1,6 @@
 import React from 'react'
 
-import * as colors from '../../constants/style'
+import * as colors from '../../constants/colors'
 
 export const errorMessageVariants = {
   stacked: { display: 'block' },
@@ -9,9 +9,9 @@ export const errorMessageVariants = {
 
 const ErrorMessage: React.FC<{
   error: Error
-  variant: 'stacked' | 'inline'
+  variant?: 'stacked' | 'inline'
   [props: string]: any
-}> = ({ error, variant, ...props }) => {
+}> = ({ error, variant = 'stacked', ...props }) => {
   return (
     <div
       role="alert"

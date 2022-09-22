@@ -1,4 +1,5 @@
 import React from 'react'
+import '@ahaui/css/dist/index.min.css'
 import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
 import { BrowserRouter as Router } from 'react-router-dom'
@@ -29,15 +30,15 @@ document.addEventListener('DOMContentLoaded', function (event: Event) {
         })
         .then(() => {
           root.render(
-            // <React.StrictMode>
-            <Provider store={store}>
-              <AuthProvider>
-                <Router>
-                  <App />
-                </Router>
-              </AuthProvider>
-            </Provider>
-            // </React.StrictMode>
+            <React.StrictMode>
+              <Provider store={store}>
+                <AuthProvider>
+                  <Router>
+                    <App />
+                  </Router>
+                </AuthProvider>
+              </Provider>
+            </React.StrictMode>
           )
         })
     } else {

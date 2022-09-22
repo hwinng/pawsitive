@@ -14,7 +14,11 @@ export type AuthState = {
 type AuthContextProps = {
   auth: AuthState | null
   isAuthenticated: boolean
-  login: (body: { username: string; firstName: string }) => Promise<void>
+  login: (body: {
+    username: string
+    firstName: string
+    password: string
+  }) => Promise<void>
   logout: () => Promise<void>
 }
 
@@ -45,7 +49,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   const login = React.useCallback(
-    async (body: { username: string; firstName: string }) => {
+    async (body: { username: string; firstName: string; password: string }) => {
       const config = {
         method: HttpMethod.POST,
         body: JSON.stringify(body),

@@ -15,11 +15,12 @@ const SECRET = 'secret'
 // AUTH APIs
 const authHandlers = [
   rest.post('/api/login', async (req, res, ctx) => {
-    const { username, firstName } = await req.json()
+    const { username, firstName, password } = await req.json()
     const data = {
       name: {
         username,
         firstName,
+        password
       },
       iat: Date.now(),
     }

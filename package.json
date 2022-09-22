@@ -19,10 +19,13 @@
     "validate": "./scripts/validate"
   },
   "dependencies": {
+    "@ahaui/css": "^2.0.5",
+    "@ahaui/react": "^2.0.3",
     "@mswjs/data": "^0.10.2",
     "@reduxjs/toolkit": "^1.8.5",
     "dexie": "^3.2.2",
     "dexie-react-hooks": "^1.1.1",
+    "jwt-decode": "^3.1.2",
     "jwt-encode": "^1.0.1",
     "lodash": "^4.17.21",
     "msw": "^0.47.2",
@@ -31,6 +34,7 @@
     "react-dom": "^18.2.0",
     "react-error-boundary": "^3.1.4",
     "react-hook-form": "^7.35.0",
+    "react-icons": "^4.4.0",
     "react-redux": "^8.0.2",
     "react-router": "^6.3.0",
     "react-router-dom": "^6.3.0",
