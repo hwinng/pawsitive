@@ -7,6 +7,7 @@ import * as Yup from 'yup'
 
 import { useAsync } from '../../hooks/useAsync'
 import type { LoginFormVm } from '../../types/types'
+import { px2vw } from '../../utils/px2vw'
 import ErrorMessage from '../Common/ErrorMessage'
 import InputField from '../Common/InputField'
 import Spinner from '../Common/Spinner'
@@ -16,7 +17,23 @@ const WelcomePageWrapper = styled.form`
   flex-direction: column;
   align-items: stretch;
   gap: 0.75rem;
-  width: 80%;
+  width: ${px2vw(75, 100)};
+  height: 100%;
+
+  @media (min-width: 768px) {
+    width: ${px2vw(300, 768)};
+    min-height: ${px2vw(200, 768)};
+  }
+
+  @media (min-width: 1024px) {
+    width: ${px2vw(350)};
+    min-height: ${px2vw(300)};
+  }
+
+  @media (min-width: 1024px) {
+    width: ${px2vw(200)};
+    min-height: ${px2vw(150)};
+  }
 `
 const LoginBtnWrapper = styled.div`
   display: flex;

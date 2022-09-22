@@ -14,6 +14,7 @@ const WelcomePageWrapper = styled.div`
   justify-content: start;
   width: 100%;
   height: 100vh;
+  margin-top: 2rem;
 `
 
 const Title = styled.h1`
@@ -22,12 +23,17 @@ const Title = styled.h1`
   padding-top: 0.5rem;
   padding-bottom: 1rem;
 `
+
+const LogoWrapper = styled.div``
+
 const UnAuthenticatedApp = () => {
   const { login } = useAuth()
   return (
     <WelcomePageWrapper>
-      <Logo />
-      <Title>Pawsitive</Title>
+      <LogoWrapper>
+        <Logo />
+        <Title>Pawsitive</Title>
+      </LogoWrapper>
       <LoginForm
         onSubmit={login}
         submitButton={<Button variant="primary">Login</Button>}
