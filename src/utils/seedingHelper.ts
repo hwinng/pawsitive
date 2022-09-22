@@ -8,14 +8,16 @@ import {
 } from '../mocks/mockHelper'
 import type { OwnerDexieModel, PetDexieModel } from '../types/common'
 
+import { syncLocalStorage } from './syncLocalStorage'
+
 // eslint-disable-next-line prettier/prettier
-export default async function dataSeedingHelper(
+async function bootstrapAppData(
   option: { noOwners: number; petPerOwner: number } = {
     noOwners: 5,
     petPerOwner: 1,
   }
 ) {
-  if (localStorage.getItem('seeded')) {
+  if (syncLocalStorage('seeded')) {
     return
   }
 
@@ -54,3 +56,5 @@ export default async function dataSeedingHelper(
 
   localStorage.setItem('seeded', JSON.stringify(true))
 }
+
+export default bootstrapAppData

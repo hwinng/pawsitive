@@ -82,7 +82,7 @@ function useAsync(initialState?: { status: Status; data: symbol } | undefined) {
   )
 
   const run = React.useCallback(
-    (promise: Promise<any>) => {
+    (promise: Promise<unknown>) => {
       if (!promise || !promise.then) {
         throw new Error(
           `The argument passed to useAsync().run must be a promise. Maybe a function that's passed isn't returning anything?`
@@ -90,7 +90,7 @@ function useAsync(initialState?: { status: Status; data: symbol } | undefined) {
       }
       dispatch({ type: Status.PENDING })
       return promise.then(
-        (data: any) => {
+        (data: unknown) => {
           setData(data)
           return data
         },

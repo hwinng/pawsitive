@@ -1,3 +1,4 @@
+import sign from 'jwt-encode'
 import isEmpty from 'lodash/isEmpty'
 import { rest } from 'msw'
 
@@ -8,64 +9,31 @@ import { errorJson, successJson } from './mockHelper'
 
 // Add an extra delay to all endpoints, so loading spinners show up.
 const ARTIFICIAL_DELAY_MS = 2000
+// should store in env or somewhere like a stash
+const SECRET = 'secret'
 
 // AUTH APIs
-// const authHandlers = [
-//   rest.post<LoginBody, LoginResponse>('/login', async (req, res, ctx) => {
-//     const { username } = await req.json()
-//     const auth = {
-//       username,
-//       firstName: 'Phillip',
-//       token: nanoid(),
-//     }
-//     localStorage.setItem('auth', JSON.stringify(auth))
-//     return res(
-//       ctx.delay(ARTIFICIAL_DELAY_MS),
-//       ctx.json({
-//         username,
-//         firstName: 'Phillip',
-//       })
-//     )
-//   }),
-//   rest.get('/whoisme', (req, res, ctx) => {
-//     const authString = localStorage.getItem('auth')
-//     if (!authString) {
-//       return res(
-//         ctx.delay(ARTIFICIAL_DELAY_MS),
-//         ctx.status(401),
-//         ctx.json({
-//           data: {
-//             message: 'Not authenticated',
-//           },
-//         })
-//       )
-//     }
-//     const auth = JSON.parse(authString)
-//     return res(
-//       ctx.delay(ARTIFICIAL_DELAY_MS),
-//       ctx.json({
-//         data: {
-//           token: auth.token,
-//         },
-//       })
-//     )
-//   }),
-//   rest.post('/logout', (req, res, ctx) => {
-//     const authString = localStorage.getItem('auth')
-//     if (authString) {
-//       localStorage.removeItem('auth')
-//     }
-//     return res(
-//       ctx.delay(ARTIFICIAL_DELAY_MS),
-//       ctx.json({
-//         data: 'Logout successfully',
-//       })
-//     )
-//   }),
-// ]
+const authHandlers = [
+  rest.post('/api/login', async (req, res, ctx) => {
+    const { username, firstName } = await req.json()
+    const data = {
+      name: {
+        username,
+        firstName,
+      },
+      iat: Date.now(),
+    }
+    const jwt = sign(data, SECRET)
+    const auth: { username: string; firstName: string; token: string } = {
+      username,
+      firstName,
+      token: jwt,
+    }
+    return res(ctx.delay(ARTIFICIAL_DELAY_MS), ctx.json(successJson(auth)))
+  }),
+]
 
 // PET APIs
-
 const petHandlers = [
   rest.get('/api/pets', async function (req, res, ctx) {
     const pets = await db.pet.toArray()
@@ -235,4 +203,4 @@ const ownerHandlers = [
   }),
 ]
 
-export const handlers = [...ownerHandlers, ...petHandlers]
+export const handlers = [...authHandlers, ...ownerHandlers, ...petHandlers]

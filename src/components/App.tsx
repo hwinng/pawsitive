@@ -1,24 +1,17 @@
 import React from 'react'
+import { useAuth } from '../hooks/useAuth'
 
-import dataSeedingHelper from '../utils/seedingHelper'
-
-import AuthenticatedApp from './Authenticated/AuthenticatedApp'
-import UnAuthenticatedApp from './Unauthenticated/UnAuthenticatedApp'
+const AuthenticatedApp = React.lazy(
+  () => import(/* webpackPrefetch: true */ './Authenticated')
+)
+const UnauthenticatedApp = React.lazy(() => import('./Unauthenticated'))
 
 export default function App() {
-  const [isAuthenticated] = React.useState(false)
+  const { isAuthenticated } = useAuth()
 
-  React.useEffect(() => {
-    initSampleData()
-  }, [])
-
-  async function initSampleData() {
-    await dataSeedingHelper()
-  }
-
-  if (isAuthenticated) {
-    return <AuthenticatedApp />
-  }
-
-  return <UnAuthenticatedApp />
+  return (
+    <React.Suspense fallback={<div>Full page spinner...</div>}>
+      {isAuthenticated ? <AuthenticatedApp /> : <UnauthenticatedApp />}
+    </React.Suspense>
+  )
 }

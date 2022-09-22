@@ -49,6 +49,13 @@ type OwnerMswFactory = {
   phoneNumber: string
 }
 
+type ClientHttpConfig = {
+  method?: HttpMethod
+  data?: any
+  token?: string
+  customHeaders?: any
+}
+
 interface OwnerDexieModel {
   id: string
   firstName: string
@@ -66,6 +73,13 @@ interface PetDexieModel {
   size: string
   image?: string
   owner: string
+}
+
+enum HttpMethod {
+  GET = 'GET',
+  POST = 'POST',
+  PUT = 'PUT',
+  DELETE = 'DELETE',
 }
 
 enum PetType {
@@ -87,7 +101,7 @@ enum Status {
   RESET = 'RESET',
 }
 
-export { Status, PetSize, PetType }
+export { Status, PetSize, PetType, HttpMethod }
 
 export type {
   Pet,
@@ -100,4 +114,5 @@ export type {
   OwnerMswFactory,
   PetDexieModel,
   OwnerDexieModel,
+  ClientHttpConfig,
 }
