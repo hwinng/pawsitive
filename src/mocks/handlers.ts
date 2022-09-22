@@ -3,7 +3,7 @@ import isEmpty from 'lodash/isEmpty'
 import { rest } from 'msw'
 
 import { dexieDb as db } from '../../db'
-import type { OwnerDexieModel, PetDexieModel } from '../types/common'
+import type { OwnerDexieModel, PetDexieModel } from '../types/types'
 
 import { errorJson, successJson } from './mockHelper'
 

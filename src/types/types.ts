@@ -1,10 +1,11 @@
-interface LoginBody {
-  username: string
-}
-interface LoginResponse {
+import type { PetType, PetSize, HttpMethod } from './enum'
+
+interface LoginFormVm {
   username: string
   firstName: string
+  password: string
 }
+
 type Pet = {
   ownerId: string
   name: number
@@ -74,42 +75,12 @@ interface PetDexieModel {
   image?: string
   owner: string
 }
-
-enum HttpMethod {
-  GET = 'GET',
-  POST = 'POST',
-  PUT = 'PUT',
-  DELETE = 'DELETE',
-}
-
-enum PetType {
-  CAT = 'CAT',
-  DOG = 'DOG',
-}
-
-enum PetSize {
-  SMALL = 'SMALL',
-  MEDIUM = 'MEDIUM',
-  LARGE = 'LARGE',
-}
-
-enum Status {
-  IDLE = 'IDLE',
-  PENDING = 'PENDING',
-  RESOLVED = 'RESOLVED',
-  REJECTED = 'REJECTED',
-  RESET = 'RESET',
-}
-
-export { Status, PetSize, PetType, HttpMethod }
-
 export type {
   Pet,
   HttpError,
   DeferredPromise,
   ReducerAction,
-  LoginResponse,
-  LoginBody,
+  LoginFormVm,
   PetMswFactory,
   OwnerMswFactory,
   PetDexieModel,

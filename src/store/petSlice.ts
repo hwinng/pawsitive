@@ -2,8 +2,8 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { normalize, schema } from 'normalizr'
 
-import type { HttpError } from '../types/common'
-import { Status, PetType, PetSize } from '../types/common'
+import { Status, PetType, PetSize } from '../types/enum'
+import type { HttpError } from '../types/types'
 
 import type { RootState } from './index'
 

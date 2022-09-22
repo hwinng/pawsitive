@@ -1,4 +1,4 @@
-import { PetType, PetSize } from '../types/common'
+import { PetType, PetSize } from '../types/enum'
 
 // Pet constant values
 const petNames = [

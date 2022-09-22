@@ -1,8 +1,8 @@
 import React from 'react'
 
 import { useAsync } from '../hooks/useAsync'
-import type { ClientHttpConfig } from '../types/common'
-import { HttpMethod } from '../types/common'
+import { HttpMethod } from '../types/enum'
+import type { ClientHttpConfig } from '../types/types'
 import { client } from '../utils/client-api'
 import { syncLocalStorage } from '../utils/syncLocalStorage'
 

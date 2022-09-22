@@ -1,7 +1,7 @@
 import type { Table } from 'dexie'
 import Dexie from 'dexie'
 
-import type { OwnerDexieModel, PetDexieModel } from '../src/types/common'
+import type { PetDexieModel, OwnerDexieModel } from '../src/types/types'
 
 export class MySubClassedDexie extends Dexie {
   pet!: Table<PetDexieModel>

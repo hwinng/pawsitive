@@ -1,5 +1,5 @@
-import type { ClientHttpConfig } from '../types/common'
-import { HttpMethod } from '../types/common'
+import { HttpMethod } from '../types/enum'
+import type { ClientHttpConfig } from '../types/types'
 
 import { syncLocalStorage } from './syncLocalStorage'
 

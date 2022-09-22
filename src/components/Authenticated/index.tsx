@@ -2,20 +2,18 @@ import React from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { Routes, Route, Navigate, useNavigate } from 'react-router-dom'
 
-import { useClient, useAuth } from '../../hooks/useAuth'
-import { HttpMethod } from '../../types/common'
+import { useAuth } from '../../hooks/useAuth'
 import { ErrorFallback } from '../Layout/ErrorFallback'
 import { FullPageErrorFallback } from '../Layout/FullPageErrorFallback'
 import NavHeader from '../Layout/NavHeader'
 
 const AuthenticatedApp = () => {
   const { logout, auth } = useAuth()
-  const client = useClient()
   const navigate = useNavigate()
 
-  React.useEffect(() => {
-    client('pets', { method: HttpMethod.GET }).then(console.log)
-  }, [])
+  // React.useEffect(() => {
+  //   client('pets', { method: HttpMethod.GET }).then(console.log)
+  // }, [])
 
   const handleLogout = async () => {
     await logout()

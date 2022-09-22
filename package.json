@@ -21,6 +21,7 @@
   "dependencies": {
     "@ahaui/css": "^2.0.5",
     "@ahaui/react": "^2.0.3",
+    "@hookform/resolvers": "^2.9.8",
     "@mswjs/data": "^0.10.2",
     "@reduxjs/toolkit": "^1.8.5",
     "dexie": "^3.2.2",
@@ -33,12 +34,13 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-error-boundary": "^3.1.4",
-    "react-hook-form": "^7.35.0",
+    "react-hook-form": "^7.36.0",
     "react-icons": "^4.4.0",
     "react-redux": "^8.0.2",
     "react-router": "^6.3.0",
     "react-router-dom": "^6.3.0",
-    "styled-components": "^5.3.5"
+    "styled-components": "^5.3.5",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@faker-js/faker": "^7.5.0",

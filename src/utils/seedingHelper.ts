@@ -6,7 +6,7 @@ import {
   createPetData,
   serializePet,
 } from '../mocks/mockHelper'
-import type { OwnerDexieModel, PetDexieModel } from '../types/common'
+import type { OwnerDexieModel, PetDexieModel } from '../types/types'
 
 import { syncLocalStorage } from './syncLocalStorage'
 

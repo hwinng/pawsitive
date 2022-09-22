@@ -1,15 +1,22 @@
-import { Form } from '@ahaui/react'
+import { yupResolver } from '@hookform/resolvers/yup'
 import React from 'react'
+import type { FieldValues } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
+import * as Yup from 'yup'
 
 import { useAsync } from '../../hooks/useAsync'
+import type { LoginFormVm } from '../../types/types'
 import ErrorMessage from '../Common/ErrorMessage'
+import InputField from '../Common/InputField'
 import Spinner from '../Common/Spinner'
 
 const WelcomePageWrapper = styled.form`
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  gap: 0.75rem;
+  width: 80%;
 `
 const LoginBtnWrapper = styled.div`
   display: flex;
@@ -17,48 +24,65 @@ const LoginBtnWrapper = styled.div`
 `
 
 const LoginForm: React.FC<{
-  onSubmit: (body: {
-    username: string
-    firstName: string
-    password: string
-  }) => Promise<void>
+  onSubmit: (body: LoginFormVm) => Promise<void>
   submitButton: React.ReactElement
-}> = ({ submitButton, onSubmit }) => {
+}> = ({ submitButton, onSubmit: _login }) => {
   const { isPending, isRejected, error, run } = useAsync()
 
-  function handleSubmit(event: any) {
-    event.preventDefault()
-    const elements: any = event.target
+  const validationSchema = Yup.object().shape({
+    firstName: Yup.string().required('First name is required'),
+    username: Yup.string()
+      .max(10, 'Username must be maximum 10 characters')
+      .required('Email is required'),
+    password: Yup.string()
+      .min(6, 'Password must be at least 6 characters')
+      .required('Password is required'),
+  })
+  const formOptions = { resolver: yupResolver(validationSchema) }
+
+  // get functions to build form with useForm() hook
+  const { register, handleSubmit, formState } = useForm(formOptions)
+  const { errors } = formState
+
+  function onSubmit(data: FieldValues) {
     run(
-      onSubmit({
-        username: elements.username.value,
-        firstName: elements.firstName.value,
-        password: elements.password.value,
+      _login({
+        username: data.username,
+        firstName: data.firstName,
+        password: data.password,
       })
     )
+    return false
   }
 
   return (
-    <WelcomePageWrapper onSubmit={handleSubmit}>
-      <Form.Group controlId="username">
-        <Form.Label>Username</Form.Label>
-        <Form.Input type="text" placeholder="Enter username" />
-      </Form.Group>
-
-      <Form.Group controlId="firstName">
-        <Form.Label>First Name</Form.Label>
-        <Form.Input type="text" placeholder="Enter first name" />
-      </Form.Group>
-
-      <Form.Group controlId="password">
-        <Form.Label>Password</Form.Label>
-        <Form.Input type="password" placeholder="Enter password" />
-      </Form.Group>
+    <WelcomePageWrapper id="loginForm" onSubmit={handleSubmit(onSubmit)}>
+      <InputField
+        name="firstName"
+        label="First Name"
+        type="text"
+        register={register}
+        error={errors.firstName?.message}
+      />
+      <InputField
+        name="username"
+        label="Username"
+        type="text"
+        register={register}
+        error={errors.username?.message}
+      />
+      <InputField
+        name="password"
+        label="Password"
+        type="password"
+        register={register}
+        error={errors.password?.message}
+      />
 
       <LoginBtnWrapper>
         {React.cloneElement(
           submitButton,
-          { type: 'submit' },
+          { type: 'submit', form: 'loginForm' },
           ...(Array.isArray(submitButton.props.children)
             ? submitButton.props.children
             : [submitButton.props.children]),
