@@ -24,9 +24,17 @@ const initialState = petsAdapter.getInitialState<{
 })
 
 export const fetchPets = createAsyncThunk('pet/fetchAll', async () => {
-  const response = await client('pets')
-  return response.data.data
+  const response = await client('/api/pets')
+  return response.data
 })
+
+export const fetchPetDetail = createAsyncThunk(
+  'pet/fetPetDetail',
+  async (petId: string) => {
+    const response = await client(`/api/pet/${petId}`)
+    return response.data
+  }
+)
 
 export const petSlice = createSlice({
   initialState,
@@ -42,6 +50,18 @@ export const petSlice = createSlice({
       petsAdapter.upsertMany(state, action.payload)
     })
     builder.addCase(fetchPets.rejected, (state, action) => {
+      state.status = Status.REJECTED
+      state.error = action.error.message
+    })
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    builder.addCase(fetchPetDetail.pending, (state, action) => {
+      state.status = Status.PENDING
+    })
+    builder.addCase(fetchPetDetail.fulfilled, (state, action) => {
+      state.status = Status.RESOLVED
+      petsAdapter.upsertOne(state, action.payload)
+    })
+    builder.addCase(fetchPetDetail.rejected, (state, action) => {
       state.status = Status.REJECTED
       state.error = action.error.message
     })

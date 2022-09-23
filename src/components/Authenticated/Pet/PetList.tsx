@@ -1,5 +1,6 @@
 import { Skeleton } from '@ahaui/react'
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 
 import { useAppDispatch, useAppSelector } from '../../../store/hooks'
@@ -7,12 +8,14 @@ import { fetchPets, selectAllPets } from '../../../store/petSlice'
 import type { BreadcrumbItemm, PetDexieModel } from '../../../types/types'
 import CustomAvatar from '../../Common/Avatar'
 import CustomBreadcrumnb from '../../Common/Breadcrumb'
+import Button from '../../Common/Button'
+import PageHeader from '../../Layout/PageHeader'
 
 const PetListLayout = styled.div`
   padding: 1rem;
 `
 
-const DataCell = styled.td<{ withAvatar?: boolean }>`
+const DataCell = styled.td<{ withAvatar?: boolean; withAction?: string }>`
   ${(props) =>
     props.withAvatar
       ? css`
@@ -22,17 +25,15 @@ const DataCell = styled.td<{ withAvatar?: boolean }>`
           justify-content: start;
         `
       : css`
-          vertical-align: middle !important; 
+          vertical-align: middle !important;
         `}
 `
 
 const PetList = () => {
   const dispatch = useAppDispatch()
   const pets = useAppSelector(selectAllPets)
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [breadcrumbItems, setBreadcrumbItems] = React.useState<
-    BreadcrumbItemm[]
-  >([
+  const navigate = useNavigate()
+  const breadcrumbItems: BreadcrumbItemm[] = [
     {
       href: '/',
       name: 'Home',
@@ -41,52 +42,93 @@ const PetList = () => {
       href: '/pets',
       name: 'Pet List',
     },
-  ])
+  ]
 
   React.useEffect(() => {
     dispatch(fetchPets())
   }, [])
 
+  function handleView(petId: string) {
+    navigate(`/pet/${petId}`)
+    return false
+  }
+  function handleEdit(petId: string) {
+    console.log({ petId })
+  }
+  function handleDelete(petId: string) {
+    console.log({ petId })
+  }
+
   return (
-    <PetListLayout>
-      <CustomBreadcrumnb items={breadcrumbItems} />
-      <div
-        className="u-widthFull u-block u-overflowHorizontalAuto"
-        style={{ maxHeight: '70vh' }}
-      >
-        {pets.length ? (
-          <table className="Table Table--stickyHeader u-backgroundWhite u-textDark u-text200">
-            <thead>
-              <tr>
-                <th scope="col">No</th>
-                <th scope="col">Name</th>
-                <th scope="col">Owner Name</th>
-                <th scope="col">Type</th>
-                <th scope="col">Breed</th>
-                <th scope="col">Size</th>
-              </tr>
-            </thead>
-            <tbody>
-              {pets.map((item: PetDexieModel, index: number) => (
-                <tr key={item.id}>
-                  <DataCell>{index + 1}</DataCell>
-                  <DataCell withAvatar>
-                    <CustomAvatar isDefault />
-                    <span>{item.name}</span>
-                  </DataCell>
-                  <DataCell>{item.owner}</DataCell>
-                  <DataCell>{item.type}</DataCell>
-                  <DataCell>{item.breed}</DataCell>
-                  <DataCell>{item.size}</DataCell>
+    <>
+      <PageHeader title="Pet List">
+        <Button variant="secondary" onClick={() => console.log('add')}>
+          Add
+        </Button>
+      </PageHeader>
+      <PetListLayout>
+        <CustomBreadcrumnb items={breadcrumbItems} />
+        <div
+          className="u-widthFull u-block u-overflowHorizontalAuto"
+          style={{ maxHeight: '70vh' }}
+        >
+          {pets.length ? (
+            <table className="Table Table--stickyHeader u-backgroundWhite u-textDark u-text200">
+              <thead>
+                <tr>
+                  <th scope="col">No</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Owner Name</th>
+                  <th scope="col">Type</th>
+                  <th scope="col">Breed</th>
+                  <th scope="col">Size</th>
+                  <th scope="col">Action</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        ) : (
-          <TableSkeleton />
-        )}
-      </div>
-    </PetListLayout>
+              </thead>
+              <tbody>
+                {pets.map((item: PetDexieModel, index: number) => (
+                  <tr key={item.id}>
+                    <DataCell>{index + 1}</DataCell>
+                    <DataCell withAvatar>
+                      <CustomAvatar isDefault />
+                      <span>{item.name}</span>
+                    </DataCell>
+                    <DataCell>{item.owner}</DataCell>
+                    <DataCell>{item.type}</DataCell>
+                    <DataCell>{item.breed}</DataCell>
+                    <DataCell>{item.size}</DataCell>
+                    <DataCell>
+                      <Button
+                        variant="primary"
+                        onClick={() => handleView(item.id)}
+                      >
+                        View
+                      </Button>
+                      <Button
+                        variant="secondary"
+                        onClick={() => handleEdit(item.id)}
+                        style={{ marginLeft: '10px' }}
+                      >
+                        Edit
+                      </Button>
+                      <Button
+                        variant="danger"
+                        onClick={() => handleDelete(item.id)}
+                        style={{ marginLeft: '10px' }}
+                      >
+                        Delete
+                      </Button>
+                    </DataCell>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <TableSkeleton />
+          )}
+        </div>
+      </PetListLayout>
+    </>
   )
 }
 

@@ -108,12 +108,6 @@ const randomPetImage = async (
   return res.url
 }
 
-const successJson = (data: unknown) => {
-  return {
-    data,
-  }
-}
-
 const errorJson = (
   message: string
 ): {
@@ -129,6 +123,5 @@ export {
   createOwnerData,
   createPetData,
   randomPetImage,
-  successJson,
   errorJson,
 }

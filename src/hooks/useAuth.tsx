@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { FullPageSpinner } from '../components/Layout/FullPageSpinner'
 import { useAsync } from '../hooks/useAsync'
 import { HttpMethod } from '../types/enum'
 import type { ClientHttpConfig } from '../types/types'
@@ -85,7 +86,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
   )
 
   if (isPending || isIdle) {
-    return <div>Full page spinner...</div>
+    return <FullPageSpinner />
   }
 
   if (isRejected) {

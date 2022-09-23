@@ -11,9 +11,13 @@ const buttonVariants = {
     background: colors.gray,
     color: colors.text,
   },
+  danger: {
+    background: colors.danger,
+    color: colors.gray10,
+  },
 }
 
-const Button = styled.button<{ variant: 'primary' | 'secondary' }>`
+const Button = styled.button<{ variant: 'primary' | 'secondary' | 'danger' }>`
   padding: 10px 15px;
   border: 0;
   line-height: 1;

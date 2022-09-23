@@ -26,7 +26,7 @@ async function client(
     ...extraConfig,
   }
 
-  return window.fetch(`api/${endpoint}`, config).then(async (response) => {
+  return window.fetch(endpoint, config).then(async (response) => {
     if (!syncLocalStorage('auth')) {
       window.location.assign(window.location.toString())
       return Promise.reject({ message: 'Please re-authenticate.' })

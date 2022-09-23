@@ -5,7 +5,7 @@ import { rest } from 'msw'
 import { dexieDb as db } from '../../db'
 import type { OwnerDexieModel, PetDexieModel } from '../types/types'
 
-import { errorJson, successJson } from './mockHelper'
+import { errorJson } from './mockHelper'
 
 // Add an extra delay to all endpoints, so loading spinners show up.
 const ARTIFICIAL_DELAY_MS = 2000
@@ -20,7 +20,7 @@ const authHandlers = [
       name: {
         username,
         firstName,
-        password
+        password,
       },
       iat: Date.now(),
     }
@@ -30,7 +30,7 @@ const authHandlers = [
       firstName,
       token: jwt,
     }
-    return res(ctx.delay(ARTIFICIAL_DELAY_MS), ctx.json(successJson(auth)))
+    return res(ctx.delay(ARTIFICIAL_DELAY_MS), ctx.json(auth))
   }),
 ]
 
@@ -38,11 +38,7 @@ const authHandlers = [
 const petHandlers = [
   rest.get('/api/pets', async function (req, res, ctx) {
     const pets = await db.pet.toArray()
-    return res(
-      ctx.delay(ARTIFICIAL_DELAY_MS),
-      ctx.status(200),
-      ctx.json(successJson(pets))
-    )
+    return res(ctx.delay(ARTIFICIAL_DELAY_MS), ctx.status(200), ctx.json(pets))
   }),
 
   rest.post('/api/pet', async function (req, res, ctx) {
@@ -52,7 +48,7 @@ const petHandlers = [
       return res(
         ctx.delay(ARTIFICIAL_DELAY_MS),
         ctx.status(200),
-        ctx.json(successJson(data))
+        ctx.json(data)
       )
     } catch (error: any) {
       return res(
@@ -69,14 +65,10 @@ const petHandlers = [
       return res(
         ctx.delay(ARTIFICIAL_DELAY_MS),
         ctx.status(200),
-        ctx.json(successJson(null))
+        ctx.json(null)
       )
     }
-    return res(
-      ctx.delay(ARTIFICIAL_DELAY_MS),
-      ctx.status(200),
-      ctx.json(successJson(pet))
-    )
+    return res(ctx.delay(ARTIFICIAL_DELAY_MS), ctx.status(200), ctx.json(pet))
   }),
 
   rest.put('/api/pet/:petId', async (req, res, ctx) => {
@@ -104,7 +96,7 @@ const petHandlers = [
     return res(
       ctx.delay(ARTIFICIAL_DELAY_MS),
       ctx.status(200),
-      ctx.json(successJson(updatedBody))
+      ctx.json(updatedBody)
     )
   }),
 
@@ -114,7 +106,7 @@ const petHandlers = [
       return res(
         ctx.delay(ARTIFICIAL_DELAY_MS),
         ctx.status(200),
-        ctx.json(successJson(req.params.petId))
+        ctx.json(req.params.petId)
       )
     } catch (error) {
       return res(
@@ -133,7 +125,7 @@ const ownerHandlers = [
     return res(
       ctx.delay(ARTIFICIAL_DELAY_MS),
       ctx.status(200),
-      ctx.json(successJson(owners))
+      ctx.json(owners)
     )
   }),
 
@@ -144,7 +136,7 @@ const ownerHandlers = [
       return res(
         ctx.delay(ARTIFICIAL_DELAY_MS),
         ctx.status(200),
-        ctx.json(successJson(data))
+        ctx.json(data)
       )
     } catch (error: any) {
       return res(
@@ -163,13 +155,13 @@ const ownerHandlers = [
       return res(
         ctx.delay(ARTIFICIAL_DELAY_MS),
         ctx.status(200),
-        ctx.json(successJson(null))
+        ctx.json(null)
       )
     }
     return res(
       ctx.delay(ARTIFICIAL_DELAY_MS),
       ctx.status(200),
-      ctx.json(successJson(owner))
+      ctx.json(owner)
     )
   }),
 
@@ -199,7 +191,7 @@ const ownerHandlers = [
     return res(
       ctx.delay(ARTIFICIAL_DELAY_MS),
       ctx.status(200),
-      ctx.json(successJson(updatedBody))
+      ctx.json(updatedBody)
     )
   }),
 ]
