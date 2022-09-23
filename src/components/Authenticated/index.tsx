@@ -8,6 +8,8 @@ import { ErrorFallback } from '../Layout/ErrorFallback'
 import { FullPageErrorFallback } from '../Layout/FullPageErrorFallback'
 import NavHeader from '../Layout/NavHeader'
 import PageHeader from '../Layout/PageHeader'
+import PetDetail from './Pet/PetDetail'
+import PetList from './Pet/PetList'
 
 const AuthenticatedApp = () => {
   const { auth, logout } = useAuth()
@@ -39,8 +41,8 @@ const AuthenticatedApp = () => {
 function AppRoutes() {
   return (
     <Routes>
-      <Route index={false} path="/pets" element={<div>PET LIST PAGE</div>} />
-      <Route path="/pet/:bookId" element={<div>PET DETAIL PAGE</div>} />
+      <Route index={false} path="/pets" element={<PetList />} />
+      <Route path="/pet/:bookId" element={<PetDetail />} />
       <Route path="/owners" element={<div>OWNER LIST PAGE</div>} />
       <Route path="*" element={<Navigate to="/pets" replace />} />
     </Routes>

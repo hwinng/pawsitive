@@ -62,6 +62,10 @@ type MediaQueryString =
   | '(min-width: 1024px)'
   | '(min-width: 1440px)'
 
+type BreadcrumbItemm = {
+  href: string
+  name: string
+}
 interface OwnerDexieModel {
   id: string
   firstName: string
@@ -92,4 +96,5 @@ export type {
   OwnerDexieModel,
   ClientHttpConfig,
   MediaQueryString,
+  BreadcrumbItemm,
 }

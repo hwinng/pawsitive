@@ -7,6 +7,7 @@ import * as colors from '../../constants/colors'
 import { useAsync } from '../../hooks/useAsync'
 import type { AuthState } from '../../hooks/useAuth'
 import { useMediaQuery } from '../../hooks/useMediaQuery'
+import { getAvatarLetter } from '../../utils/getAvatarText'
 import CustomAvatar from '../Common/Avatar'
 import Button from '../Common/Button'
 import { Logo } from '../Common/Logo'
@@ -159,13 +160,6 @@ const NavHeader: React.FC<{
 }> = ({ userInfo, title = 'Pawsitive', logout }) => {
   const isTablet = useMediaQuery('(min-width: 768px)')
   const { run } = useAsync()
-  const shortUsername = React.useMemo(() => {
-    let name = 'AV'
-    if (userInfo.firstName) {
-      name = userInfo.firstName.slice(0, 2).toString().toUpperCase()
-    }
-    return name
-  }, [userInfo.firstName])
 
   async function handleLogout() {
     await run(logout())
@@ -187,10 +181,7 @@ const NavHeader: React.FC<{
 
         <div>
           <AvatarWrapper>
-            <CustomAvatar
-              className="u-backgroundPrimaryLight u-text200"
-              text={shortUsername}
-            />
+            <CustomAvatar text={getAvatarLetter(userInfo.firstName)} />
             <Button variant="secondary" onClick={handleLogout}>
               Logout
             </Button>
@@ -214,10 +205,7 @@ const NavHeader: React.FC<{
         <Title>{title}</Title>
       </MenuMobileWrapper>
       <AvatarWrapper isMobile>
-        <CustomAvatar
-          className="u-backgroundPrimaryLight u-text200"
-          text={shortUsername}
-        />
+        <CustomAvatar text={getAvatarLetter(userInfo.firstName)} />
       </AvatarWrapper>
     </NavHeaderWrapper>
   )

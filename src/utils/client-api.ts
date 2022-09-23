@@ -5,9 +5,13 @@ import { syncLocalStorage } from './syncLocalStorage'
 
 async function client(
   endpoint: string,
-  configs: ClientHttpConfig = {},
+  configs: ClientHttpConfig = {
+    method: HttpMethod.GET,
+  },
   ...extraConfig: any
 ) {
+  const auth = syncLocalStorage('auth')
+  const token = auth?.token
   const config = {
     method: configs.method,
     body:
@@ -15,7 +19,7 @@ async function client(
         ? JSON.stringify(configs.data)
         : undefined,
     headers: {
-      Authorization: configs.token ? `Bearer ${configs.token}` : undefined,
+      Authorization: token ? `Bearer ${token}` : undefined,
       'Content-Type': configs.data ? 'application/json' : undefined,
       ...configs.customHeaders,
     },
@@ -27,11 +31,21 @@ async function client(
       window.location.assign(window.location.toString())
       return Promise.reject({ message: 'Please re-authenticate.' })
     }
-    const data = await response.json()
-    if (response.ok) {
-      return data
-    } else {
-      return Promise.reject(data)
+
+    let data: any
+    try {
+      data = await response.json()
+      if (response.ok) {
+        return {
+          status: response.status,
+          data,
+          headers: response.headers,
+          url: response.url,
+        }
+      }
+      throw new Error(response.statusText)
+    } catch (err: any) {
+      return Promise.reject(err.message ? err.message : data)
     }
   })
 }

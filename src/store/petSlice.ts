@@ -1,62 +1,59 @@
-import type { PayloadAction } from '@reduxjs/toolkit'
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { normalize, schema } from 'normalizr'
+import {
+  createEntityAdapter,
+  createSlice,
+  createAsyncThunk,
+} from '@reduxjs/toolkit'
 
-import { Status, PetType, PetSize } from '../types/enum'
-import type { HttpError } from '../types/types'
+import { Status } from '../types/enum'
+import type { PetDexieModel } from '../types/types'
+import { client } from '../utils/client-api'
 
 import type { RootState } from './index'
 
-// Define a type for the slice state
-interface Pet {
-  pet: null | Pet
-  pets: [] | Partial<Pet>[]
+const petsAdapter = createEntityAdapter({
+  sortComparer: (a: PetDexieModel, b: PetDexieModel) =>
+    b.name.localeCompare(a.name),
+})
+
+const initialState = petsAdapter.getInitialState<{
   status: Status
-  error: null | HttpError
-}
-
-// Define the initial state using that type
-const initialState: Pet = {
-  error: null,
-  pet: null,
-  pets: [],
+  error: string | undefined
+}>({
   status: Status.IDLE,
-}
-
-const petEntity = new schema.Entity('pets')
+  error: undefined,
+})
 
 export const fetchPets = createAsyncThunk('pet/fetchAll', async () => {
-  const response = await Promise.resolve({
-    data: [
-      {
-        ownerId: 'asdjasd',
-        name: 'Ally',
-        type: PetType.DOG,
-        breed: 'Beagle',
-        size: PetSize.MEDIUM,
-      },
-    ],
-  })
-  // Normalize the data before passing it to our reducer
-  const normalized = normalize(response.data, [petEntity])
-  return normalized.entities
+  const response = await client('pets')
+  return response.data.data
 })
 
 export const petSlice = createSlice({
   initialState,
   name: 'pet',
-  reducers: {
-    loadPets: (state, action: PayloadAction<Partial<Pet>[]>) => {
-      state.pets = action.payload || []
-    },
+  reducers: {},
+  extraReducers(builder) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    builder.addCase(fetchPets.pending, (state, action) => {
+      state.status = Status.PENDING
+    })
+    builder.addCase(fetchPets.fulfilled, (state, action) => {
+      state.status = Status.RESOLVED
+      petsAdapter.upsertMany(state, action.payload)
+    })
+    builder.addCase(fetchPets.rejected, (state, action) => {
+      state.status = Status.REJECTED
+      state.error = action.error.message
+    })
   },
 })
 
-// Extract and export each action creator by name
-export const { loadPets } = petSlice.actions
-
 // Other code such as selectors can use the imported `RootState` type
 export const selectPet = (state: RootState) => state.pet
-
+export const {
+  selectAll: selectAllPets,
+  selectById: selectPetById,
+  selectIds: selectPetIds,
+} = petsAdapter.getSelectors((state: RootState) => state.pet)
 // Export the reducer, either as a default or named export
 export default petSlice.reducer
