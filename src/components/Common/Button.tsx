@@ -12,14 +12,19 @@ const buttonVariants = {
     color: colors.text,
   },
 }
-const Button = styled.button(
-  {
-    padding: '10px 15px',
-    border: '0',
-    lineHeight: '1',
-    borderRadius: '3px',
-  },
-  ({ variant }: { variant: 'primary' | 'primary' }) => buttonVariants[variant]
-)
 
+const Button = styled.button<{ variant: 'primary' | 'secondary' }>`
+  padding: 10px 15px;
+  border: 0;
+  line-height: 1;
+  border-radius: 3px;
+  &:hover,
+  :active {
+    opacity: 0.7;
+    cursor: pointer;
+  }
+  ${(props) => {
+    return buttonVariants[props.variant]
+  }}
+`
 export default Button

@@ -1,6 +1,6 @@
 import React from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
-import { Routes, Route, Navigate, useNavigate } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 
 import { useAuth } from '../../hooks/useAuth'
 import { ErrorFallback } from '../Layout/ErrorFallback'
@@ -8,22 +8,15 @@ import { FullPageErrorFallback } from '../Layout/FullPageErrorFallback'
 import NavHeader from '../Layout/NavHeader'
 
 const AuthenticatedApp = () => {
-  const { logout, auth } = useAuth()
-  const navigate = useNavigate()
+  const { auth } = useAuth()
 
   // React.useEffect(() => {
   //   client('pets', { method: HttpMethod.GET }).then(console.log)
   // }, [])
 
-  const handleLogout = async () => {
-    await logout()
-    navigate('/pets')
-  }
-
   return (
     <ErrorBoundary FallbackComponent={FullPageErrorFallback}>
       {auth && <NavHeader userInfo={auth} />}
-      <button onClick={handleLogout}>Logout</button>
       <ErrorBoundary FallbackComponent={ErrorFallback}>
         <AppRoutes />
       </ErrorBoundary>
@@ -36,6 +29,7 @@ function AppRoutes() {
     <Routes>
       <Route index={false} path="/pets" element={<div>PET LIST PAGE</div>} />
       <Route path="/pet/:bookId" element={<div>PET DETAIL PAGE</div>} />
+      <Route path="/owners" element={<div>OWNER LIST PAGE</div>} />
       <Route path="*" element={<Navigate to="/pets" replace />} />
     </Routes>
   )

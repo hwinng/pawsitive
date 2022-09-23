@@ -57,6 +57,11 @@ type ClientHttpConfig = {
   customHeaders?: any
 }
 
+type MediaQueryString =
+  | '(min-width: 768px)'
+  | '(min-width: 1024px)'
+  | '(min-width: 1440px)'
+
 interface OwnerDexieModel {
   id: string
   firstName: string
@@ -86,4 +91,5 @@ export type {
   PetDexieModel,
   OwnerDexieModel,
   ClientHttpConfig,
+  MediaQueryString,
 }

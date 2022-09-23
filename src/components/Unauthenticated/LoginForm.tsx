@@ -30,7 +30,7 @@ const WelcomePageWrapper = styled.form`
     min-height: ${px2vw(300)};
   }
 
-  @media (min-width: 1024px) {
+  @media (min-width: 1440px) {
     width: ${px2vw(200)};
     min-height: ${px2vw(150)};
   }

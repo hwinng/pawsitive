@@ -1,14 +1,17 @@
 import * as React from 'react'
 
-export const Logo: React.FC<{ width?: string; height?: string }> = ({
-  width = '120',
-  height = '120',
-}) => (
+export const Logo: React.FC<{
+  width?: string
+  height?: string
+  viewBox?: string
+  style?: any
+}> = ({ width = '120', height = '120', viewBox = '0 0 360 150', style }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={`${width}px`}
     height={`${height}px`}
-    viewBox={`0 0 360 150`}
+    viewBox={viewBox}
+    style={style}
   >
     <path
       style={{
