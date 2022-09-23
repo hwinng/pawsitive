@@ -5,7 +5,7 @@ import styled, { css } from 'styled-components'
 
 import * as colors from '../../constants/colors'
 import { useAsync } from '../../hooks/useAsync'
-import { AuthState, useAuth } from '../../hooks/useAuth'
+import type { AuthState } from '../../hooks/useAuth'
 import { useMediaQuery } from '../../hooks/useMediaQuery'
 import CustomAvatar from '../Common/Avatar'
 import Button from '../Common/Button'
@@ -17,7 +17,7 @@ const NavHeaderWrapper = styled.nav<{ isMobile?: boolean }>`
       return css`
         display: flex;
         justify-content: space-between;
-        border: 1px solid #d3d3d3;
+        border-bottom: 1px solid #d3d3d3;
         align-items: center;
         padding-inline: 1rem;
       `
@@ -152,13 +152,13 @@ function Nav() {
 }
 
 type UserInfoVM = Partial<AuthState>
-const NavHeader: React.FC<{ title?: string; userInfo: UserInfoVM }> = ({
-  userInfo,
-  title = 'Pawsitive',
-}) => {
+const NavHeader: React.FC<{
+  title?: string
+  userInfo: UserInfoVM
+  logout: () => Promise<void>
+}> = ({ userInfo, title = 'Pawsitive', logout }) => {
   const isTablet = useMediaQuery('(min-width: 768px)')
   const { run } = useAsync()
-  const { logout } = useAuth()
   const shortUsername = React.useMemo(() => {
     let name = 'AV'
     if (userInfo.firstName) {
