@@ -3,11 +3,15 @@ import React from 'react'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 
+import { useAsync } from '../../../hooks/useAsync'
 import { useAppDispatch, useAppSelector } from '../../../store/hooks'
 import { fetchPetDetail, selectPetById } from '../../../store/petSlice'
 import type { BreadcrumbItemm } from '../../../types/types'
+import { client } from '../../../utils/client-api'
 import CustomBreadcrumnb from '../../Common/Breadcrumb'
 import Button from '../../Common/Button'
+import { ErrorFallback } from '../../Layout/ErrorFallback'
+import { FullPageSpinner } from '../../Layout/FullPageSpinner'
 import PageHeader from '../../Layout/PageHeader'
 import RowItem from '../RowItem'
 
@@ -24,6 +28,14 @@ const RowWrapper = styled.div`
 
 type PetDetailProps = {}
 const PetDetail: React.FC<PetDetailProps> = () => {
+  const {
+    run,
+    isPending,
+    isIdle,
+    isRejected,
+    data: ownerData,
+    error,
+  } = useAsync()
   const { petId } = useParams()
   const petDetail = useAppSelector((state) =>
     selectPetById(state, petId as EntityId)
@@ -49,6 +61,30 @@ const PetDetail: React.FC<PetDetailProps> = () => {
     }
   }, [petId])
 
+  React.useEffect(() => {
+    if (petDetail?.owner) {
+      const p = fetchOwnerDetail(petDetail.owner)
+      run(p).then(console.log)
+    }
+  }, [petDetail?.owner])
+
+  if (isIdle || isPending) {
+    return <FullPageSpinner />
+  }
+
+  if (isRejected) {
+    return <ErrorFallback error={error} />
+  }
+
+  async function fetchOwnerDetail(ownerId: string) {
+    try {
+      const res = await client(`/api/owner/${ownerId}`)
+      return Promise.resolve(res)
+    } catch (err) {
+      return Promise.reject(err)
+    }
+  }
+
   return (
     <React.Fragment>
       <PageHeader title="Pet Detail">
@@ -64,7 +100,8 @@ const PetDetail: React.FC<PetDetailProps> = () => {
         <div>
           <RowWrapper>
             <RowItem field="Pet Id" value={petId} />
-            <RowItem field="Owner Id" value={petDetail?.owner} />
+            <RowItem field="Owner Name" value={ownerData?.data.name} />
+            <RowItem field="Owner Phone" value={ownerData?.data.phoneNumber} />
             <RowItem field="Pet Name" value={petDetail?.name} />
             <RowItem field="Type" value={petDetail?.type} />
             <RowItem field="Breed" value={petDetail?.breed} />

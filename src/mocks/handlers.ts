@@ -158,11 +158,7 @@ const ownerHandlers = [
         ctx.json(null)
       )
     }
-    return res(
-      ctx.delay(ARTIFICIAL_DELAY_MS),
-      ctx.status(200),
-      ctx.json(owner)
-    )
+    return res(ctx.delay(ARTIFICIAL_DELAY_MS), ctx.status(200), ctx.json(owner))
   }),
 
   rest.put('/api/owner/:ownerId', async (req, res, ctx) => {

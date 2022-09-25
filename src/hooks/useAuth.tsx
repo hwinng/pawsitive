@@ -1,4 +1,5 @@
 import React from 'react'
+import { ErrorFallback } from '../components/Layout/ErrorFallback'
 
 import { FullPageSpinner } from '../components/Layout/FullPageSpinner'
 import { useAsync } from '../hooks/useAsync'
@@ -90,7 +91,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   if (isRejected) {
-    return <div>Error fallback...</div>
+    return ErrorFallback
   }
 
   if (isResolved) {

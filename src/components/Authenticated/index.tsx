@@ -29,6 +29,7 @@ function AppRoutes() {
       <Route index={false} path="/pets" element={<PetList />} />
       <Route path="/pet/:petId" element={<PetDetail />} />
       <Route path="/owners" element={<div>OWNER LIST PAGE</div>} />
+      <Route path="/owner/:ownerId" element={<div>OWNER DETAIL PAGE</div>} />
       <Route path="*" element={<Navigate to="/pets" replace />} />
     </Routes>
   )

@@ -72,7 +72,8 @@ function useAsync(initialState?: { status: Status; data: symbol } | undefined) {
     [dispatch]
   )
   const setError = React.useCallback(
-    (error: HttpError) => dispatch({ type: Status.REJECTED, payload: error }),
+    (error: HttpError | string) =>
+      dispatch({ type: Status.REJECTED, payload: error }),
     [dispatch]
   )
 

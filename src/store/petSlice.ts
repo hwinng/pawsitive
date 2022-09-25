@@ -8,6 +8,8 @@ import { Status } from '../types/enum'
 import type { PetDexieModel } from '../types/types'
 import { client } from '../utils/client-api'
 
+import { fetchOwnerDetail } from './ownerSlice'
+
 import type { RootState } from './index'
 
 const petsAdapter = createEntityAdapter({
@@ -65,11 +67,12 @@ export const petSlice = createSlice({
       state.status = Status.REJECTED
       state.error = action.error.message
     })
+    builder.addCase(fetchOwnerDetail.fulfilled, (state, action) => {
+      petsAdapter.upsertOne(state, action.payload)
+    })
   },
 })
 
-// Other code such as selectors can use the imported `RootState` type
-export const selectPet = (state: RootState) => state.pet
 export const {
   selectAll: selectAllPets,
   selectById: selectPetById,

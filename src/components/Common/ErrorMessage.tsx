@@ -8,7 +8,7 @@ export const errorMessageVariants = {
 }
 
 const ErrorMessage: React.FC<{
-  error: Error
+  error: Error | string
   variant?: 'stacked' | 'inline'
   [props: string]: any
 }> = ({ error, variant = 'stacked', ...props }) => {
@@ -25,7 +25,7 @@ const ErrorMessage: React.FC<{
           errorMessageVariants[variant],
         ]}
       >
-        {error.message}
+        {typeof error === 'string' ? error : error.message}
       </pre>
     </div>
   )

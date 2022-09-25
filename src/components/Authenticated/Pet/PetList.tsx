@@ -1,11 +1,16 @@
 import { Skeleton } from '@ahaui/react'
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 
 import { useAppDispatch, useAppSelector } from '../../../store/hooks'
+import { fetchOwners, selectAllOwners } from '../../../store/ownerSlice'
 import { fetchPets, selectAllPets } from '../../../store/petSlice'
-import type { BreadcrumbItemm, PetDexieModel } from '../../../types/types'
+import type {
+  BreadcrumbItemm,
+  OwnerDexieModel,
+  PetDexieModel,
+} from '../../../types/types'
 import CustomAvatar from '../../Common/Avatar'
 import CustomBreadcrumnb from '../../Common/Breadcrumb'
 import Button from '../../Common/Button'
@@ -29,9 +34,15 @@ const DataCell = styled.td<{ withAvatar?: boolean; withAction?: string }>`
         `}
 `
 
+interface PetViewModel extends PetDexieModel {
+  readonly ownerName: string | undefined
+  readonly ownerPhone: string | undefined
+}
 const PetList = () => {
+  const [petViewData, setPetViewData] = React.useState<PetViewModel[]>([])
   const dispatch = useAppDispatch()
   const pets = useAppSelector(selectAllPets)
+  const owners = useAppSelector(selectAllOwners)
   const navigate = useNavigate()
   const breadcrumbItems: BreadcrumbItemm[] = [
     {
@@ -46,7 +57,36 @@ const PetList = () => {
 
   React.useEffect(() => {
     dispatch(fetchPets())
+    dispatch(fetchOwners())
   }, [])
+
+  React.useEffect(() => {
+    if (owners.length && pets.length) {
+      const data = mergeOwnerToPet(pets, owners)
+      console.log({ data })
+      setPetViewData(data)
+    }
+  }, [owners, pets])
+
+  function mergeOwnerToPet(
+    pets: PetDexieModel[],
+    owners: OwnerDexieModel[]
+  ): PetViewModel[] {
+    const result: PetViewModel[] = []
+    pets.forEach((pet: PetDexieModel) => {
+      // find pet owner by owner id
+      // pets only have 1 owner, so use find to lookup
+      const foundOwner = owners.find(
+        (owner: OwnerDexieModel) => owner.id === pet.owner
+      )
+      result.push({
+        ...pet,
+        ownerName: foundOwner?.name,
+        ownerPhone: foundOwner?.phoneNumber,
+      })
+    })
+    return result
+  }
 
   function handleView(petId: string) {
     navigate(`/pet/${petId}`)
@@ -72,13 +112,14 @@ const PetList = () => {
           className="u-widthFull u-block u-overflowHorizontalAuto"
           style={{ maxHeight: '70vh' }}
         >
-          {pets.length ? (
+          {petViewData.length ? (
             <table className="Table Table--stickyHeader u-backgroundWhite u-textDark u-text200">
               <thead>
                 <tr>
                   <th scope="col">No</th>
                   <th scope="col">Name</th>
                   <th scope="col">Owner Name</th>
+                  <th scope="col">Owner Phone</th>
                   <th scope="col">Type</th>
                   <th scope="col">Breed</th>
                   <th scope="col">Size</th>
@@ -86,14 +127,17 @@ const PetList = () => {
                 </tr>
               </thead>
               <tbody>
-                {pets.map((item: PetDexieModel, index: number) => (
+                {petViewData.map((item: PetViewModel, index: number) => (
                   <tr key={item.id}>
                     <DataCell>{index + 1}</DataCell>
                     <DataCell withAvatar>
                       <CustomAvatar isDefault />
                       <span>{item.name}</span>
                     </DataCell>
-                    <DataCell>{item.owner}</DataCell>
+                    <DataCell>
+                      <Link to={`/owner/${item.owner}`}>{item.ownerName}</Link>
+                    </DataCell>
+                    <DataCell>{item.ownerPhone}</DataCell>
                     <DataCell>{item.type}</DataCell>
                     <DataCell>{item.breed}</DataCell>
                     <DataCell>{item.size}</DataCell>
