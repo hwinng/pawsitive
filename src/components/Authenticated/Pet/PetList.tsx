@@ -1,11 +1,20 @@
-import { Skeleton } from '@ahaui/react'
+import { Skeleton, Modal as AhaModal } from '@ahaui/react'
+import { nanoid } from '@reduxjs/toolkit'
+import { delay } from 'lodash'
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 
+import { useAsync } from '../../../hooks/useAsync'
 import { useAppDispatch, useAppSelector } from '../../../store/hooks'
 import { fetchOwners, selectAllOwners } from '../../../store/ownerSlice'
-import { fetchPets, selectAllPets } from '../../../store/petSlice'
+import {
+  addNewPet,
+  fetchPets,
+  selectAllPets,
+  selectPet,
+} from '../../../store/petSlice'
+import { Status } from '../../../types/enum'
 import type {
   BreadcrumbItemm,
   OwnerDexieModel,
@@ -14,7 +23,10 @@ import type {
 import Avatar from '../../Common/Avatar'
 import CustomBreadcrumnb from '../../Common/Breadcrumb'
 import Button from '../../Common/Button'
+import { ErrorFallback } from '../../Layout/ErrorFallback'
 import PageHeader from '../../Layout/PageHeader'
+
+import AddPetForm from './PetAddForm'
 
 const PetListLayout = styled.div`
   padding: 1rem;
@@ -40,10 +52,15 @@ interface PetViewModel extends PetDexieModel {
 }
 const PetList = () => {
   const [petViewData, setPetViewData] = React.useState<PetViewModel[]>([])
+  const [showAddModal, setShowAddModal] = React.useState<boolean>(false)
+
   const dispatch = useAppDispatch()
+  const petState = useAppSelector(selectPet)
   const pets = useAppSelector(selectAllPets)
   const owners = useAppSelector(selectAllOwners)
+
   const navigate = useNavigate()
+  const { isRejected, error } = useAsync()
   const breadcrumbItems: BreadcrumbItemm[] = [
     {
       href: '/',
@@ -67,14 +84,16 @@ const PetList = () => {
     }
   }, [owners, pets])
 
+  if (isRejected) {
+    return <ErrorFallback error={error} />
+  }
+
   function mergeOwnerToPet(
     pets: PetDexieModel[],
     owners: OwnerDexieModel[]
   ): PetViewModel[] {
     const result: PetViewModel[] = []
     pets.forEach((pet: PetDexieModel) => {
-      // find pet owner by owner id
-      // pets only have 1 owner, so use find to lookup
       const foundOwner = owners.find(
         (owner: OwnerDexieModel) => owner.id === pet.owner
       )
@@ -94,10 +113,24 @@ const PetList = () => {
   function handleEdit(petId: string) {}
   function handleDelete(petId: string) {}
 
+  async function handleAdd(data: any) {
+    const body: PetDexieModel = {
+      id: nanoid(),
+      ...data,
+    }
+    dispatch(addNewPet(body))
+
+    delay(() => {
+      setShowAddModal(false)
+    }, 1000)
+
+    return false
+  }
+
   return (
-    <>
+    <React.Fragment>
       <PageHeader title="Pet List">
-        <Button variant="secondary" onClick={() => console.log('add')}>
+        <Button variant="secondary" onClick={() => setShowAddModal(true)}>
           Add
         </Button>
       </PageHeader>
@@ -167,7 +200,27 @@ const PetList = () => {
           )}
         </div>
       </PetListLayout>
-    </>
+
+      {showAddModal && (
+        <AhaModal
+          show={showAddModal}
+          centered
+          onHide={() => setShowAddModal(false)}
+        >
+          <AhaModal.Header closeButton>
+            <AhaModal.Title>Add Pet</AhaModal.Title>
+          </AhaModal.Header>
+          <AhaModal.Body>
+            <AddPetForm
+              owners={owners}
+              onSubmit={handleAdd}
+              submitButton={<Button variant="primary">Add</Button>}
+              isPending={petState.status === Status.PENDING}
+            />
+          </AhaModal.Body>
+        </AhaModal>
+      )}
+    </React.Fragment>
   )
 }
 

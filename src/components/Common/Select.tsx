@@ -3,6 +3,8 @@ import styled from 'styled-components'
 
 import type { Option } from '../../types/types'
 
+import { InputFieldError } from './InputField'
+
 const Select = styled.select`
   display: block;
   width: 100%;
@@ -23,6 +25,8 @@ type SelectFieldProps = {
   label: string
   options: Array<Option>
   defaultValue?: Option
+  mode?: 'add' | 'edit'
+  error?: any
   register: UseFormRegister<FieldValues>
 }
 const SelectField: React.FC<SelectFieldProps> = ({
@@ -31,12 +35,15 @@ const SelectField: React.FC<SelectFieldProps> = ({
   name,
   label,
   defaultValue,
+  mode = 'edit',
+  error,
   ...rest
 }) => {
   return (
     <div>
       <label htmlFor={name}>{label}</label>
       <Select {...register(name)} {...rest}>
+        {mode === 'add' && <option value="">Choose an option</option>}
         {options.map((option) => (
           <option
             selected={defaultValue?.value === option.value}
@@ -47,6 +54,7 @@ const SelectField: React.FC<SelectFieldProps> = ({
           </option>
         ))}
       </Select>
+      <InputFieldError hasError={!!error}>{error}</InputFieldError>
     </div>
   )
 }

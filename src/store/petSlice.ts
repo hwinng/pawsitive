@@ -14,7 +14,7 @@ import type { RootState } from './index'
 
 const petsAdapter = createEntityAdapter({
   sortComparer: (a: PetDexieModel, b: PetDexieModel) =>
-    b.name.localeCompare(a.name),
+    a.name.localeCompare(b.name),
 })
 
 const initialState = petsAdapter.getInitialState<{
@@ -43,6 +43,28 @@ export const removePet = createAsyncThunk(
   async (petId: string) => {
     const response = await client(`/api/pet/${petId}`, {
       method: HttpMethod.DELETE,
+    })
+    return response.data
+  }
+)
+
+export const addNewPet = createAsyncThunk(
+  'pet/addNewPet',
+  async (pet: PetDexieModel) => {
+    const response = await client('/api/pet', {
+      method: HttpMethod.POST,
+      data: pet,
+    })
+    return response.data
+  }
+)
+
+export const updatePet = createAsyncThunk(
+  'pet/updatePet',
+  async (arg: { petId: string; body: Partial<PetDexieModel> }) => {
+    const response = await client(`/api/pet/${arg.petId}`, {
+      method: HttpMethod.PUT,
+      data: arg.body,
     })
     return response.data
   }
@@ -83,9 +105,24 @@ export const petSlice = createSlice({
     builder.addCase(removePet.fulfilled, (state, action) => {
       petsAdapter.removeOne(state, action.payload)
     })
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    builder.addCase(addNewPet.pending, (state, action) => {
+      state.status = Status.PENDING
+    })
+    builder.addCase(addNewPet.fulfilled, (state, action) => {
+      petsAdapter.addOne(state, action.payload)
+    })
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    builder.addCase(updatePet.pending, (state, action) => {
+      state.status = Status.PENDING
+    })
+    builder.addCase(updatePet.fulfilled, (state, action) => {
+      petsAdapter.updateOne(state, action.payload)
+    })
   },
 })
 
+export const selectPet = (state: RootState) => state.pet
 export const {
   selectAll: selectAllPets,
   selectById: selectPetById,

@@ -29,7 +29,7 @@ const Input = styled.input<{ hasError: boolean }>`
     `};
 `
 
-const InputFieldError = styled.div<{ hasError: boolean }>`
+export const InputFieldError = styled.div<{ hasError: boolean }>`
   ${(props) =>
     props.hasError &&
     css`

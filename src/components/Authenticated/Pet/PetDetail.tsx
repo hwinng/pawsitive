@@ -1,5 +1,6 @@
 import { Modal as AhaModal } from '@ahaui/react'
 import type { EntityId } from '@reduxjs/toolkit'
+import { delay } from 'lodash'
 import React from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
@@ -10,14 +11,12 @@ import { fetchOwners, selectAllOwners } from '../../../store/ownerSlice'
 import {
   fetchPetDetail,
   removePet,
+  selectPet,
   selectPetById,
+  updatePet,
 } from '../../../store/petSlice'
-import { HttpMethod } from '../../../types/enum'
-import type {
-  BreadcrumbItemm,
-  OwnerDexieModel,
-  PetDexieModel,
-} from '../../../types/types'
+import { Status } from '../../../types/enum'
+import type { BreadcrumbItemm, OwnerDexieModel } from '../../../types/types'
 import { client } from '../../../utils/client-api'
 import CustomBreadcrumnb from '../../Common/Breadcrumb'
 import Button from '../../Common/Button'
@@ -41,19 +40,23 @@ const RowWrapper = styled.div`
 
 type PetDetailProps = {}
 const PetDetail: React.FC<PetDetailProps> = () => {
-  const { run, isRejected, error, isPending } = useAsync()
+  const { petId } = useParams()
+  const navigate = useNavigate()
+
   const [ownerData, setOwnerData] = React.useState<OwnerDexieModel | undefined>(
     undefined
   )
   const [showEditModal, setShowEditModal] = React.useState(false)
   const [showDeleteModal, setShowDeleteModal] = React.useState(false)
-  const { petId } = useParams()
-  const navigate = useNavigate()
+
+  const petState = useAppSelector(selectPet)
   const petDetail = useAppSelector((state) =>
     selectPetById(state, petId as EntityId)
   )
   const owners = useAppSelector(selectAllOwners)
   const dispatch = useAppDispatch()
+
+  const { isRejected, error } = useAsync()
   const breadcrumbItems: BreadcrumbItemm[] = [
     {
       href: '/',
@@ -98,32 +101,21 @@ const PetDetail: React.FC<PetDetailProps> = () => {
     setShowEditModal(true)
   }
   async function handleEdit(data: any) {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { ownerId, ...rest } = data
-    const body: Partial<PetDexieModel> = {
-      owner: data.ownerId,
-      ...rest,
+    if (petId) {
+      dispatch(
+        updatePet({
+          petId,
+          body: data,
+        })
+      )
     }
-    run(updatePet(body))
-      .then(() => {
-        setShowEditModal(false)
-      })
-      .finally(() => {
-        window.location.assign(window.location.toString())
-      })
-    return false
-  }
 
-  async function updatePet(data: Partial<PetDexieModel>) {
-    try {
-      const res = await client(`/api/pet/${petId}`, {
-        method: HttpMethod.PUT,
-        data,
-      })
-      return Promise.resolve(res.data)
-    } catch (error) {
-      return Promise.reject(error)
-    }
+    delay(() => {
+      setShowEditModal(false)
+      window.location.assign(window.location.toString())
+    }, 500)
+
+    return false
   }
 
   async function handleDeletePet(petId: string | undefined) {
@@ -173,7 +165,7 @@ const PetDetail: React.FC<PetDetailProps> = () => {
               petData={petDetail}
               onSubmit={handleEdit}
               submitButton={<Button variant="primary">Confirm</Button>}
-              isPending={isPending}
+              isPending={petState.status === Status.PENDING}
             />
           </AhaModal.Body>
         </AhaModal>
@@ -199,7 +191,10 @@ const PetDetail: React.FC<PetDetailProps> = () => {
               Cancel
             </Button>
             <Button variant="primary" onClick={() => handleDeletePet(petId)}>
-              Ok {isPending ? <Spinner style={{ marginLeft: 5 }} /> : null}
+              Ok{' '}
+              {petState.status === Status.PENDING ? (
+                <Spinner style={{ marginLeft: 5 }} />
+              ) : null}
             </Button>
           </AhaModal.Footer>
         </AhaModal>
