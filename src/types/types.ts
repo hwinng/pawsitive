@@ -84,6 +84,12 @@ interface PetDexieModel {
   image?: string
   owner: string
 }
+
+type Option<T=string, K = string> = {
+  value: T
+  label: K
+}
+
 export type {
   Pet,
   HttpError,
@@ -96,5 +102,6 @@ export type {
   OwnerDexieModel,
   ClientHttpConfig,
   MediaQueryString,
-  BreadcrumbItemm
+  BreadcrumbItemm,
+  Option
 }

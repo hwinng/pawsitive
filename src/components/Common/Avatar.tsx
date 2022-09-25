@@ -1,4 +1,4 @@
-import { Avatar } from '@ahaui/react'
+import { Avatar as AhaAvatar } from '@ahaui/react'
 import { faker } from '@faker-js/faker'
 import React from 'react'
 import styled, { css } from 'styled-components'
@@ -37,7 +37,7 @@ type AvatarProps = {
   [props: string]: any
   isDefault?: boolean
 }
-const CustomAvatar: React.FC<AvatarProps> = ({
+const Avatar: React.FC<AvatarProps> = ({
   name,
   text,
   src,
@@ -64,7 +64,7 @@ const CustomAvatar: React.FC<AvatarProps> = ({
 
   if (typeof src === 'undefined') {
     return (
-      <Avatar
+      <AhaAvatar
         text={text}
         name={name}
         size={size}
@@ -77,7 +77,7 @@ const CustomAvatar: React.FC<AvatarProps> = ({
   }
   return (
     <AvatarWrapper {...props}>
-      <Avatar
+      <AhaAvatar
         name={name}
         src={src}
         size={size}
@@ -90,4 +90,4 @@ const CustomAvatar: React.FC<AvatarProps> = ({
   )
 }
 
-export default CustomAvatar
+export default Avatar

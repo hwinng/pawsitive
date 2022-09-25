@@ -15,7 +15,7 @@ async function client(
   const config = {
     method: configs.method,
     body:
-      configs.method === (HttpMethod.POST || HttpMethod.PUT)
+      configs.method === HttpMethod.POST || configs.method === HttpMethod.PUT
         ? JSON.stringify(configs.data)
         : undefined,
     headers: {

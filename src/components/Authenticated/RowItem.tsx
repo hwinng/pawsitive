@@ -27,6 +27,7 @@ type RowItemProps = {
   field: string
   value: string | undefined
   mode?: 'view' | 'editing'
+  type?: 'input' | 'dropdown'
   disabled?: boolean
 }
 const RowItem: React.FC<RowItemProps> = ({
@@ -39,9 +40,13 @@ const RowItem: React.FC<RowItemProps> = ({
   return (
     <RowInforWrapper disabled={disabled}>
       <FieldText>{field}:</FieldText>
-      {value ? <ValueText>{value}</ValueText> : <Skeleton width={100} />}
+      {mode === 'view' && <ViewContent value={value} />}
     </RowInforWrapper>
   )
+}
+
+const ViewContent = ({ value }: { value: string | undefined }) => {
+  return value ? <ValueText>{value}</ValueText> : <Skeleton width={100} />
 }
 
 export default RowItem

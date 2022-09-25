@@ -11,7 +11,7 @@ import type {
   OwnerDexieModel,
   PetDexieModel,
 } from '../../../types/types'
-import CustomAvatar from '../../Common/Avatar'
+import Avatar from '../../Common/Avatar'
 import CustomBreadcrumnb from '../../Common/Breadcrumb'
 import Button from '../../Common/Button'
 import PageHeader from '../../Layout/PageHeader'
@@ -63,7 +63,6 @@ const PetList = () => {
   React.useEffect(() => {
     if (owners.length && pets.length) {
       const data = mergeOwnerToPet(pets, owners)
-      console.log({ data })
       setPetViewData(data)
     }
   }, [owners, pets])
@@ -92,12 +91,8 @@ const PetList = () => {
     navigate(`/pet/${petId}`)
     return false
   }
-  function handleEdit(petId: string) {
-    console.log({ petId })
-  }
-  function handleDelete(petId: string) {
-    console.log({ petId })
-  }
+  function handleEdit(petId: string) {}
+  function handleDelete(petId: string) {}
 
   return (
     <>
@@ -131,7 +126,7 @@ const PetList = () => {
                   <tr key={item.id}>
                     <DataCell>{index + 1}</DataCell>
                     <DataCell withAvatar>
-                      <CustomAvatar isDefault />
+                      <Avatar isDefault />
                       <span>{item.name}</span>
                     </DataCell>
                     <DataCell>

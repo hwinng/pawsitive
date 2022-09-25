@@ -23,6 +23,7 @@
     "@ahaui/react": "^2.0.3",
     "@hookform/resolvers": "^2.9.8",
     "@mswjs/data": "^0.10.2",
+    "@reach/dialog": "^0.17.0",
     "@reduxjs/toolkit": "^1.8.5",
     "dexie": "^3.2.2",
     "dexie-react-hooks": "^1.1.1",

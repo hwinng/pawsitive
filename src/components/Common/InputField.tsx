@@ -2,14 +2,6 @@ import * as React from 'react'
 import type { HTMLInputTypeAttribute } from 'react'
 import styled, { css } from 'styled-components'
 
-type InputFieldProps = {
-  name: string
-  label: string
-  register: any
-  type?: HTMLInputTypeAttribute
-  error?: any
-}
-
 const Input = styled.input<{ hasError: boolean }>`
   display: block;
   width: 100%;
@@ -48,9 +40,18 @@ const InputFieldError = styled.div<{ hasError: boolean }>`
     `}
 `
 
+type InputFieldProps = {
+  name: string
+  label: string
+  register?: any
+  type?: HTMLInputTypeAttribute
+  error?: any
+  defaultValue?: string
+}
 const InputField: React.FC<InputFieldProps> = ({
   label,
   name,
+  defaultValue,
   register,
   type,
   error,
@@ -63,6 +64,7 @@ const InputField: React.FC<InputFieldProps> = ({
       type={type}
       {...register(name)}
       hasError={!!error}
+      defaultValue={defaultValue}
     ></Input>
     <InputFieldError hasError={!!error}>{error}</InputFieldError>
   </div>

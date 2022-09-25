@@ -7,39 +7,14 @@ import * as Yup from 'yup'
 
 import { useAsync } from '../../hooks/useAsync'
 import type { LoginFormVm } from '../../types/types'
-import { px2vw } from '../../utils/px2vw'
 import ErrorMessage from '../Common/ErrorMessage'
+import { FormWrapper } from '../Common/Form'
 import InputField from '../Common/InputField'
 import Spinner from '../Common/Spinner'
-
-const WelcomePageWrapper = styled.form`
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: 0.75rem;
-  width: ${px2vw(75, 100)};
-  height: 100%;
-
-  @media (min-width: 768px) {
-    width: ${px2vw(300, 768)};
-    min-height: ${px2vw(200, 768)};
-  }
-
-  @media (min-width: 1024px) {
-    width: ${px2vw(350)};
-    min-height: ${px2vw(300)};
-  }
-
-  @media (min-width: 1440px) {
-    width: ${px2vw(200)};
-    min-height: ${px2vw(150)};
-  }
-`
 const LoginBtnWrapper = styled.div`
   display: flex;
   justify-content: center;
 `
-
 const LoginForm: React.FC<{
   onSubmit: (body: LoginFormVm) => Promise<void>
   submitButton: React.ReactElement
@@ -73,7 +48,7 @@ const LoginForm: React.FC<{
   }
 
   return (
-    <WelcomePageWrapper id="loginForm" onSubmit={handleSubmit(onSubmit)}>
+    <FormWrapper id="loginForm" onSubmit={handleSubmit(onSubmit)}>
       <InputField
         name="firstName"
         label="First Name"
@@ -107,7 +82,7 @@ const LoginForm: React.FC<{
         )}
       </LoginBtnWrapper>
       {isRejected ? <ErrorMessage error={error} /> : null}
-    </WelcomePageWrapper>
+    </FormWrapper>
   )
 }
 

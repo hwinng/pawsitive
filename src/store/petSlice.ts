@@ -4,7 +4,7 @@ import {
   createAsyncThunk,
 } from '@reduxjs/toolkit'
 
-import { Status } from '../types/enum'
+import { HttpMethod, Status } from '../types/enum'
 import type { PetDexieModel } from '../types/types'
 import { client } from '../utils/client-api'
 
@@ -34,6 +34,16 @@ export const fetchPetDetail = createAsyncThunk(
   'pet/fetPetDetail',
   async (petId: string) => {
     const response = await client(`/api/pet/${petId}`)
+    return response.data
+  }
+)
+
+export const removePet = createAsyncThunk(
+  'pet/removePet',
+  async (petId: string) => {
+    const response = await client(`/api/pet/${petId}`, {
+      method: HttpMethod.DELETE,
+    })
     return response.data
   }
 )
@@ -69,6 +79,9 @@ export const petSlice = createSlice({
     })
     builder.addCase(fetchOwnerDetail.fulfilled, (state, action) => {
       petsAdapter.upsertOne(state, action.payload)
+    })
+    builder.addCase(removePet.fulfilled, (state, action) => {
+      petsAdapter.removeOne(state, action.payload)
     })
   },
 })
