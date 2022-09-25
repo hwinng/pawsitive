@@ -14,10 +14,10 @@ function syncLocalStorage(
   }
 
   const valueInLocalStorage = localStorage.getItem(key)
-  if (valueInLocalStorage) {
-    return JSON.parse(valueInLocalStorage)
+  if (!valueInLocalStorage || valueInLocalStorage === 'undefined') {
+    return null
   }
-  return null
+  return JSON.parse(valueInLocalStorage)
 }
 
 export { syncLocalStorage }

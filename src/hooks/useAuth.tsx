@@ -61,7 +61,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
       }
 
       const p = await fetch('/api/login', config)
-      run(p.json()).then(({ data }: any) => {
+      run(p.json()).then((data: any) => {
         setData(data)
         syncLocalStorage('auth', { method: 'serialize', data: data })
       })
