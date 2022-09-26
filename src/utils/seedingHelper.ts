@@ -10,7 +10,7 @@ import { syncLocalStorage } from './syncLocalStorage'
 async function bootstrapAppData(
   option: { noOwners: number; petPerOwner: number } = {
     noOwners: 5,
-    petPerOwner: 1,
+    petPerOwner: 2,
   }
 ) {
   if (syncLocalStorage('seeded')) {
