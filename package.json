@@ -1,6 +1,6 @@
 {
-  "name": "vite-react-ts-extended",
-  "version": "2.0.0",
+  "name": "pawsitive",
+  "version": "1.0.0",
   "license": "MIT",
   "msw": {
     "workerDirectory": "."
@@ -19,21 +19,45 @@
     "validate": "./scripts/validate"
   },
   "dependencies": {
+    "@ahaui/css": "^2.0.5",
+    "@ahaui/react": "^2.0.3",
+    "@hookform/resolvers": "^2.9.8",
+    "@mswjs/data": "^0.10.2",
+    "@reduxjs/toolkit": "^1.8.5",
+    "dexie": "^3.2.2",
+    "dexie-react-hooks": "^1.1.1",
+    "jwt-encode": "^1.0.1",
+    "lodash": "^4.17.21",
+    "msw": "^0.47.2",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-error-boundary": "^3.1.4",
+    "react-hook-form": "^7.36.0",
+    "react-icons": "^4.4.0",
+    "react-redux": "^8.0.2",
+    "react-router": "^6.3.0",
+    "react-router-dom": "^6.3.0",
+    "styled-components": "^5.3.5",
+    "vite-tsconfig-paths": "^3.5.1",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
+    "@faker-js/faker": "^7.5.0",
     "@testing-library/dom": "^8.17.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",
-    "@types/jest": "^29.0.1",
+    "@types/jest": "^29.0.3",
+    "@types/jwt-encode": "^1.0.0",
     "@types/react": "^18.0.19",
     "@types/react-dom": "^18.0.6",
+    "@types/seedrandom": "^3.0.2",
+    "@types/styled-components": "^5.1.26",
     "@types/testing-library__jest-dom": "^5.14.5",
     "@typescript-eslint/eslint-plugin": "^5.37.0",
     "@typescript-eslint/parser": "^5.37.0",
     "@vitejs/plugin-react": "^2.1.0",
+    "babel-plugin-styled-components": "^2.0.7",
     "concurrently": "^7.4.0",
     "esbuild-jest": "^0.5.0",
     "eslint": "^8.23.1",
@@ -48,12 +72,16 @@
     "jest": "^28.1.1",
     "jest-environment-jsdom": "^29.0.2",
     "jest-watch-typeahead": "^2.2.0",
-    "msw": "^0.47.2",
     "node-notifier": "^10.0.1",
     "prettier": "^2.7.0",
+    "seedrandom": "^3.0.5",
     "serve": "^14.0.1",
+    "ts-jest": "^29.0.1",
     "typescript": "^4.8.3",
     "vite": "^3.1.0",
     "whatwg-fetch": "^3.6.2"
+  },
+  "resolutions": {
+    "styled-components": "^5"
   }
 }

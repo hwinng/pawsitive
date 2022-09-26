@@ -4,12 +4,13 @@ const config = {
   moduleFileExtensions: ['js', 'mjs', 'jsx', 'ts', 'tsx', 'json'],
   moduleNameMapper: {
     '^.+\\.module\\.(css|sass|scss)$': 'identity-obj-proxy',
+    '^dexie$': require.resolve('dexie'),
   },
   notify: true,
   notifyMode: 'success-change',
   resetMocks: true,
   roots: ['<rootDir>'],
-  setupFilesAfterEnv: ['<rootDir>/jest/setupTests.ts'],
+  setupFilesAfterEnv: ['<rootDir>/src/jest/setupTests.js'],
   testEnvironment: 'jsdom',
   testMatch: [
     '<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}',
@@ -17,12 +18,13 @@ const config = {
   ],
   transform: {
     '^(?!.*\\.(js|jsx|mjs|cjs|ts|tsx|css|json)$)':
-      '<rootDir>/jest/fileTransform.js',
+      '<rootDir>/src/jest/fileTransform.js',
     '^.+\\.[jt]sx?$': 'esbuild-jest',
-    '^.+\\.css$': '<rootDir>/jest/cssTransform.js',
+    '^.+\\.css$': '<rootDir>/src/jest/cssTransform.js',
   },
   transformIgnorePatterns: [
     '[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs|cjs|ts|tsx)$',
+    '^.+\\.module\\.(css|sass|scss)$',
     '^.+\\.module\\.(css|sass|scss)$',
   ],
   verbose: true,

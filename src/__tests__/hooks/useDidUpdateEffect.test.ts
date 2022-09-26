@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react'
 
-import useDidUpdateEffect from './useDidUpdateEffect'
+import useDidUpdateEffect from './../../hooks/useDidUpdateEffect'
 
 test('useUpdateEffect simulates componentDidUpdate', () => {
   const effect = jest.fn()
