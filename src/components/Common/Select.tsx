@@ -24,7 +24,7 @@ type SelectFieldProps = {
   name: string
   label: string
   options: Array<Option>
-  defaultValue?: Option
+  defaultValue?: string | number | readonly string[] | undefined
   mode?: 'add' | 'edit'
   error?: any
   register: UseFormRegister<FieldValues>
@@ -42,14 +42,10 @@ const SelectField: React.FC<SelectFieldProps> = ({
   return (
     <div>
       <label htmlFor={name}>{label}</label>
-      <Select {...register(name)} {...rest}>
+      <Select {...register(name)} {...rest} defaultValue={defaultValue}>
         {mode === 'add' && <option value="">Choose an option</option>}
         {options.map((option) => (
-          <option
-            selected={defaultValue?.value === option.value}
-            key={option.value}
-            value={option.value}
-          >
+          <option key={option.value} value={option.value}>
             {option.label}
           </option>
         ))}

@@ -11,8 +11,10 @@ import { fetchOwners, selectAllOwners } from '../../../store/ownerSlice'
 import {
   addNewPet,
   fetchPets,
+  removePet,
   selectAllPets,
   selectPet,
+  updatePet,
 } from '../../../store/petSlice'
 import { Status } from '../../../types/enum'
 import type {
@@ -23,10 +25,12 @@ import type {
 import Avatar from '../../Common/Avatar'
 import CustomBreadcrumnb from '../../Common/Breadcrumb'
 import Button from '../../Common/Button'
+import Spinner from '../../Common/Spinner'
 import { ErrorFallback } from '../../Layout/ErrorFallback'
 import PageHeader from '../../Layout/PageHeader'
 
 import AddPetForm from './PetAddForm'
+import EditPetForm from './PetEditForm'
 
 const PetListLayout = styled.div`
   padding: 1rem;
@@ -53,6 +57,11 @@ interface PetViewModel extends PetDexieModel {
 const PetList = () => {
   const [petViewData, setPetViewData] = React.useState<PetViewModel[]>([])
   const [showAddModal, setShowAddModal] = React.useState<boolean>(false)
+  const [showEditModal, setShowEditModal] = React.useState<boolean>(false)
+  const [showDeleteModal, setShowDeleteModal] = React.useState<boolean>(false)
+  const [activePetId, setActivePetId] = React.useState<string | undefined>(
+    undefined
+  )
 
   const dispatch = useAppDispatch()
   const petState = useAppSelector(selectPet)
@@ -106,12 +115,20 @@ const PetList = () => {
     return result
   }
 
-  function handleView(petId: string) {
+  function handleClickViewBtn(petId: string) {
     navigate(`/pet/${petId}`)
     return false
   }
-  function handleEdit(petId: string) {}
-  function handleDelete(petId: string) {}
+
+  function handleClickEditBtn(petId: string) {
+    setActivePetId(petId)
+    setShowEditModal(true)
+  }
+
+  function handleClickDeleteBtn(petId: string) {
+    setActivePetId(petId)
+    setShowDeleteModal(true)
+  }
 
   async function handleAdd(data: any) {
     const body: PetDexieModel = {
@@ -125,6 +142,34 @@ const PetList = () => {
     }, 1000)
 
     return false
+  }
+
+  async function onSubmitEdit(data: any) {
+    if (activePetId) {
+      dispatch(
+        updatePet({
+          petId: activePetId,
+          body: data,
+        })
+      )
+    }
+
+    delay(() => {
+      setShowEditModal(false)
+      window.location.assign(window.location.toString())
+    }, 500)
+
+    return false
+  }
+
+  async function onSubmitDelete() {
+    if (activePetId) {
+      dispatch(removePet(activePetId))
+      delay(() => {
+        setShowDeleteModal(false)
+        window.location.assign(window.location.toString())
+      }, 500)
+    }
   }
 
   return (
@@ -172,20 +217,20 @@ const PetList = () => {
                     <DataCell>
                       <Button
                         variant="primary"
-                        onClick={() => handleView(item.id)}
+                        onClick={() => handleClickViewBtn(item.id)}
                       >
                         View
                       </Button>
                       <Button
                         variant="secondary"
-                        onClick={() => handleEdit(item.id)}
+                        onClick={() => handleClickEditBtn(item.id)}
                         style={{ marginLeft: '10px' }}
                       >
                         Edit
                       </Button>
                       <Button
                         variant="danger"
-                        onClick={() => handleDelete(item.id)}
+                        onClick={() => handleClickDeleteBtn(item.id)}
                         style={{ marginLeft: '10px' }}
                       >
                         Delete
@@ -218,6 +263,56 @@ const PetList = () => {
               isPending={petState.status === Status.PENDING}
             />
           </AhaModal.Body>
+        </AhaModal>
+      )}
+
+      {showEditModal && activePetId && (
+        <AhaModal
+          show={showEditModal}
+          centered
+          onHide={() => setShowEditModal(false)}
+        >
+          <AhaModal.Header closeButton>
+            <AhaModal.Title>Edit Pet</AhaModal.Title>
+          </AhaModal.Header>
+          <AhaModal.Body>
+            <EditPetForm
+              owners={owners}
+              petData={petState.entities[activePetId]}
+              onSubmit={onSubmitEdit}
+              submitButton={<Button variant="primary">Confirm</Button>}
+              isPending={petState.status === Status.PENDING}
+            />
+          </AhaModal.Body>
+        </AhaModal>
+      )}
+
+      {showDeleteModal && activePetId && (
+        <AhaModal
+          show={showDeleteModal}
+          centered
+          onHide={() => setShowDeleteModal(false)}
+        >
+          <AhaModal.Header closeButton>
+            <AhaModal.Title>Delete Pet</AhaModal.Title>
+          </AhaModal.Header>
+          <AhaModal.Body>
+            <p>Are you sure?</p>
+          </AhaModal.Body>
+          <AhaModal.Footer>
+            <Button
+              variant="secondary"
+              onClick={() => setShowDeleteModal(false)}
+            >
+              Cancel
+            </Button>
+            <Button variant="primary" onClick={onSubmitDelete}>
+              Ok{' '}
+              {petState.status === Status.PENDING ? (
+                <Spinner style={{ marginLeft: 5 }} />
+              ) : null}
+            </Button>
+          </AhaModal.Footer>
         </AhaModal>
       )}
     </React.Fragment>

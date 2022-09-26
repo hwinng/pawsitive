@@ -64,7 +64,7 @@ const EditPetForm: React.FC<{
       <SelectField
         name="owner"
         label="Owner"
-        defaultValue={defaultOwnerOption}
+        defaultValue={defaultOwnerOption?.value}
         register={register}
         options={ownerOptions}
       />
@@ -80,6 +80,7 @@ const EditPetForm: React.FC<{
         name="type"
         label="Type"
         register={register}
+        defaultValue={petData?.type}
         options={typeOptions}
       />
       <InputField
@@ -95,6 +96,7 @@ const EditPetForm: React.FC<{
         label="Size"
         register={register}
         options={sizeOptions}
+        defaultValue={petData?.size}
       />
       <>
         {React.cloneElement(

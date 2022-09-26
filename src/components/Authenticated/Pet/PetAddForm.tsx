@@ -18,7 +18,6 @@ const AddPetForm: React.FC<{
   isPending: boolean
   onSubmit: (data: any) => Promise<boolean>
 }> = ({ owners, submitButton, isPending, onSubmit }) => {
-  console.log({ isPending })
   const ownerOptions: Array<Option<string>> = React.useMemo(() => {
     return owners.map((owner: OwnerDexieModel) => ({
       label: owner.name,

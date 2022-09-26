@@ -85,7 +85,7 @@ interface PetDexieModel {
   owner: string
 }
 
-type Option<T=string, K = string> = {
+type Option<T = string, K = string> = {
   value: T
   label: K
 }
@@ -103,5 +103,5 @@ export type {
   ClientHttpConfig,
   MediaQueryString,
   BreadcrumbItemm,
-  Option
+  Option,
 }

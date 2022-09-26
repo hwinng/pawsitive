@@ -121,6 +121,7 @@ const PetDetail: React.FC<PetDetailProps> = () => {
   async function handleDeletePet(petId: string | undefined) {
     if (petId) {
       dispatch(removePet(petId))
+      setShowDeleteModal(false)
       navigate('/pets')
     }
   }
