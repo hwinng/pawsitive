@@ -194,7 +194,7 @@ function UserDropdown({
   logout,
 }: {
   isExpanded: boolean
-  logout: () => Promise<void>
+  logout: () => void
 }) {
   return (
     <RightDropdown aria-expanded={isExpanded}>
@@ -216,8 +216,8 @@ const NavHeader: React.FC<{
   const isTablet = useMediaQuery('(min-width: 768px)')
   const { run } = useAsync()
 
-  async function handleLogout() {
-    await run(logout())
+  function handleLogout() {
+    run(logout())
   }
 
   if (isTablet) {

@@ -60,8 +60,8 @@ function AuthProvider({ children }: { children: JSX.Element | JSX.Element[] }) {
         },
       }
 
-      const p = await fetch('/api/login', config)
-      run(p.json()).then((data: any) => {
+      const promise = await fetch('/api/login', config)
+      run(promise.json()).then((data: any) => {
         setData(data)
         syncLocalStorage('auth', { method: 'serialize', data: data })
       })

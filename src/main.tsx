@@ -12,8 +12,7 @@ import bootstrapAppData from './utils/seedingHelper'
 
 let container: Element | null = null
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-document.addEventListener('DOMContentLoaded', function (event: Event) {
+document.addEventListener('DOMContentLoaded', function () {
   if (!container) {
     container = document.getElementById('root')
   }
