@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 
 import { useAsync } from '../../../hooks/useAsync'
+import { useMediaQuery } from '../../../hooks/useMediaQuery'
 import { useAppDispatch, useAppSelector } from '../../../store/hooks'
 import { fetchOwners, selectAllOwners } from '../../../store/ownerSlice'
 import {
@@ -36,18 +37,38 @@ const PetListLayout = styled.div`
   padding: 1rem;
 `
 
-const DataCell = styled.td<{ withAvatar?: boolean; withAction?: string }>`
-  ${(props) =>
-    props.withAvatar
-      ? css`
+const DataCell = styled.td<{
+  withAvatar?: boolean
+  withAction?: string
+  isMobile?: boolean
+}>`
+  ${(props) => {
+    if (Boolean(props.isMobile)) {
+      if (props.withAvatar) {
+        return css`
+          &:first-child {
+            width: 50%;
+          }
+        `
+      }
+      return css`
+        display: flex;
+      `
+    } else {
+      if (props.withAvatar) {
+        return css`
           display: flex;
           align-items: center;
           gap: 10px;
           justify-content: start;
         `
-      : css`
+      } else {
+        return css`
           vertical-align: middle !important;
-        `}
+        `
+      }
+    }
+  }}
 `
 
 interface PetViewModel extends PetDexieModel {
@@ -62,6 +83,7 @@ const PetList = () => {
   const [activePetId, setActivePetId] = React.useState<string | undefined>(
     undefined
   )
+  const isTablet = useMediaQuery('(min-width: 768px)')
 
   const dispatch = useAppDispatch()
   const petState = useAppSelector(selectPet)
@@ -203,7 +225,7 @@ const PetList = () => {
                 {petViewData.map((item: PetViewModel, index: number) => (
                   <tr key={item.id}>
                     <DataCell>{index + 1}</DataCell>
-                    <DataCell withAvatar>
+                    <DataCell withAvatar isMobile={!isTablet}>
                       <Avatar isDefault />
                       <span>{item.name}</span>
                     </DataCell>
@@ -214,7 +236,7 @@ const PetList = () => {
                     <DataCell>{item.type}</DataCell>
                     <DataCell>{item.breed}</DataCell>
                     <DataCell>{item.size}</DataCell>
-                    <DataCell>
+                    <DataCell isMobile={!isTablet}>
                       <Button
                         variant="primary"
                         onClick={() => handleClickViewBtn(item.id)}
