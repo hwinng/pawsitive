@@ -27,7 +27,7 @@ type AuthContextProps = {
 const AuthContext = React.createContext<AuthContextProps | undefined>(undefined)
 AuthContext.displayName = 'AuthContext'
 
-function AuthProvider({ children }: { children: React.ReactNode }) {
+function AuthProvider({ children }: { children: JSX.Element | JSX.Element[] }) {
   const {
     data: _auth,
     status,
@@ -91,7 +91,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   if (isRejected) {
-    return ErrorFallback
+    return <ErrorFallback error={error} />
   }
 
   if (isResolved) {

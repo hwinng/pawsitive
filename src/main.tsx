@@ -5,6 +5,7 @@ import { Provider } from 'react-redux'
 import { BrowserRouter as Router } from 'react-router-dom'
 
 import App from './components/App'
+import { FullPageSpinner } from './components/Layout/FullPageSpinner'
 import { AuthProvider } from './hooks/useAuth'
 import { store } from './store'
 import bootstrapAppData from './utils/seedingHelper'
@@ -26,9 +27,15 @@ document.addEventListener('DOMContentLoaded', function (event: Event) {
           })
         })
         .then(() => {
-          bootstrapAppData()
+          console.log('should render loading')
+          root.render(<FullPageSpinner seeding={true} />)
+          return bootstrapAppData()
         })
         .then(() => {
+          console.log('prepare for render app')
+        })
+        .then(() => {
+          console.log('render app')
           root.render(
             <React.StrictMode>
               <Provider store={store}>

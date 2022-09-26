@@ -1,6 +1,9 @@
+import styled from 'styled-components'
+
 import Spinner from '../Common/Spinner'
 
-function FullPageSpinner() {
+const SeedingText = styled.h3``
+const FullPageSpinner: React.FC<{ seeding?: boolean }> = ({ seeding }) => {
   return (
     <div
       style={{
@@ -13,6 +16,7 @@ function FullPageSpinner() {
       }}
     >
       <Spinner />
+      {seeding && <SeedingText>Waiting for creating sample data</SeedingText>}
     </div>
   )
 }
