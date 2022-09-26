@@ -63,6 +63,9 @@ const IconWrapper = styled.div`
 const MenuMobileWrapper = styled.div`
   display: flex;
   align-items: center;
+  &[aria-expanded='true'] {
+    position: relative;
+  }
 `
 
 const AvatarWrapper = styled.div<{ isMobile?: boolean }>`
@@ -152,12 +155,64 @@ function Nav() {
   )
 }
 
+const NavListMobile = styled.nav`
+  display: none;
+  &[aria-expanded='true'] {
+    display: block;
+    position: absolute;
+    list-style: none;
+    top: 100%;
+    background: lightgray;
+    border-radius: 5px;
+    width: 100%;
+    padding-left: 10px;
+    padding-block: 10px;
+    box-shadow: 0 0 10px 8px rgb(0 0 0 / 10%);
+  }
+`
+function NavMobile({ isExpanded }: { isExpanded: boolean }) {
+  return (
+    <NavListMobile aria-expanded={isExpanded}>
+      <NavItem>
+        <NavLink to="/pets">Pet</NavLink>
+      </NavItem>
+      <NavItem>
+        <NavLink to="/owners">Owner</NavLink>
+      </NavItem>
+    </NavListMobile>
+  )
+}
+
+const RightDropdown = styled.div`
+  display: none;
+  &[aria-expanded='true'] {
+    display: block;
+  }
+`
+function UserDropdown({
+  isExpanded,
+  logout,
+}: {
+  isExpanded: boolean
+  logout: () => Promise<void>
+}) {
+  return (
+    <RightDropdown aria-expanded={isExpanded}>
+      <Button variant="secondary" onClick={logout}>
+        Logout
+      </Button>
+    </RightDropdown>
+  )
+}
+
 type UserInfoVM = Partial<AuthState>
 const NavHeader: React.FC<{
   title?: string
   userInfo: UserInfoVM
   logout: () => Promise<void>
 }> = ({ userInfo, title = 'Pawsitive', logout }) => {
+  const [menuExpanded, setMenuExpanded] = React.useState(false)
+  const [userDropdownExpanded, setUserDropdownExpanded] = React.useState(false)
   const isTablet = useMediaQuery('(min-width: 768px)')
   const { run } = useAsync()
 
@@ -192,10 +247,14 @@ const NavHeader: React.FC<{
   }
   return (
     <NavHeaderWrapper isMobile>
-      <MenuMobileWrapper>
-        <IconWrapper>
+      <MenuMobileWrapper aria-expanded={menuExpanded}>
+        <IconWrapper
+          onClick={() => setMenuExpanded(!menuExpanded)}
+          aria-expanded={menuExpanded}
+        >
           <AiOutlineMenu />
         </IconWrapper>
+        <NavMobile isExpanded={menuExpanded} />
         <Logo
           width="54"
           height="54"
@@ -204,9 +263,13 @@ const NavHeader: React.FC<{
         />
         <Title>{title}</Title>
       </MenuMobileWrapper>
-      <AvatarWrapper isMobile>
+      <AvatarWrapper
+        isMobile
+        onClick={() => setUserDropdownExpanded(!userDropdownExpanded)}
+      >
         <CustomAvatar text={getAvatarLetter(userInfo.firstName)} />
       </AvatarWrapper>
+      <UserDropdown isExpanded={userDropdownExpanded} logout={handleLogout} />
     </NavHeaderWrapper>
   )
 }
