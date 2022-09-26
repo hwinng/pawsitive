@@ -3,14 +3,14 @@ import { AiOutlineMenu } from 'react-icons/ai'
 import { useMatch, Link as RouterLink } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 
-import * as colors from '../../constants/colors'
-import { useAsync } from '../../hooks/useAsync'
-import type { AuthState } from '../../hooks/useAuth'
-import { useMediaQuery } from '../../hooks/useMediaQuery'
-import { getAvatarLetter } from '../../utils/getAvatarText'
-import CustomAvatar from '../Common/Avatar'
-import Button from '../Common/Button'
-import { Logo } from '../Common/Logo'
+import Avatar from 'components/Common/Avatar'
+import Button from 'components/Common/Button'
+import { Logo } from 'components/Common/Logo'
+import * as colors from 'constants/colors'
+import { useAsync } from 'hooks/useAsync'
+import type { AuthState } from 'hooks/useAuth'
+import { useMediaQuery } from 'hooks/useMediaQuery'
+import { getAvatarLetter } from 'utils/getAvatarText'
 
 const NavHeaderWrapper = styled.nav<{ isMobile?: boolean }>`
   ${(props) => {
@@ -236,7 +236,7 @@ const NavHeader: React.FC<{
 
         <div>
           <AvatarWrapper>
-            <CustomAvatar text={getAvatarLetter(userInfo.firstName)} />
+            <Avatar text={getAvatarLetter(userInfo.firstName)} />
             <Button variant="secondary" onClick={handleLogout}>
               Logout
             </Button>
@@ -267,7 +267,7 @@ const NavHeader: React.FC<{
         isMobile
         onClick={() => setUserDropdownExpanded(!userDropdownExpanded)}
       >
-        <CustomAvatar text={getAvatarLetter(userInfo.firstName)} />
+        <Avatar text={getAvatarLetter(userInfo.firstName)} />
       </AvatarWrapper>
       <UserDropdown isExpanded={userDropdownExpanded} logout={handleLogout} />
     </NavHeaderWrapper>

@@ -5,12 +5,13 @@ import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 import * as Yup from 'yup'
 
-import { useAsync } from '../../hooks/useAsync'
-import type { LoginFormVm } from '../../types/types'
-import ErrorMessage from '../Common/ErrorMessage'
-import { FormWrapper } from '../Common/Form'
-import InputField from '../Common/InputField'
-import Spinner from '../Common/Spinner'
+import ErrorMessage from 'components/Common/ErrorMessage'
+import { FormWrapper } from 'components/Common/Form'
+import InputField from 'components/Common/InputField'
+import Spinner from 'components/Common/Spinner'
+import { useAsync } from 'hooks/useAsync'
+import type { LoginFormVm } from 'types/types'
+
 const LoginBtnWrapper = styled.div`
   display: flex;
   justify-content: center;

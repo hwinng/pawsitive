@@ -1,6 +1,6 @@
+import { Skeleton } from '@ahaui/react'
 import React from 'react'
 import styled, { css } from 'styled-components'
-import { Skeleton } from '@ahaui/react'
 
 const RowInforWrapper = styled.div<{ disabled?: boolean }>`
   ${(props) => {

@@ -3,14 +3,14 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import * as Yup from 'yup'
 
-import { useAsync } from '../../../hooks/useAsync'
-import { PetSize, PetType } from '../../../types/enum'
-import type { Option, OwnerDexieModel } from '../../../types/types'
-import ErrorMessage from '../../Common/ErrorMessage'
-import { FormWrapper } from '../../Common/Form'
-import InputField from '../../Common/InputField'
-import SelectField from '../../Common/Select'
-import Spinner from '../../Common/Spinner'
+import ErrorMessage from 'components/Common/ErrorMessage'
+import { FormWrapper } from 'components/Common/Form'
+import InputField from 'components/Common/InputField'
+import SelectField from 'components/Common/Select'
+import Spinner from 'components/Common/Spinner'
+import { useAsync } from 'hooks/useAsync'
+import { PetSize, PetType } from 'types/enum'
+import type { OwnerDexieModel, Option } from 'types/types'
 
 const AddPetForm: React.FC<{
   owners: OwnerDexieModel[] | []

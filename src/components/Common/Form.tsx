@@ -2,7 +2,7 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 
-import { px2vw } from '../../utils/px2vw'
+import { px2vw } from 'utils/px2vw'
 
 type FormProps = {
   defaultValues?: any

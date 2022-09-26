@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import * as colors from '../../constants/colors'
+import * as colors from 'constants/colors'
 
 const buttonVariants = {
   primary: {

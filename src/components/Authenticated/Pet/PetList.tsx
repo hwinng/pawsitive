@@ -5,30 +5,30 @@ import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 
-import { useAsync } from '../../../hooks/useAsync'
-import { useMediaQuery } from '../../../hooks/useMediaQuery'
-import { useAppDispatch, useAppSelector } from '../../../store/hooks'
-import { fetchOwners, selectAllOwners } from '../../../store/ownerSlice'
+import Avatar from 'components/Common/Avatar'
+import CustomBreadcrumnb from 'components/Common/Breadcrumb'
+import Button from 'components/Common/Button'
+import Spinner from 'components/Common/Spinner'
+import { ErrorFallback } from 'components/Layout/ErrorFallback'
+import PageHeader from 'components/Layout/PageHeader'
+import { useAsync } from 'hooks/useAsync'
+import { useMediaQuery } from 'hooks/useMediaQuery'
+import { useAppDispatch, useAppSelector } from 'store/hooks'
+import { selectAllOwners, fetchOwners } from 'store/ownerSlice'
 import {
-  addNewPet,
-  fetchPets,
-  removePet,
-  selectAllPets,
   selectPet,
+  selectAllPets,
+  fetchPets,
+  addNewPet,
   updatePet,
-} from '../../../store/petSlice'
-import { Status } from '../../../types/enum'
+  removePet,
+} from 'store/petSlice'
+import { Status } from 'types/enum'
 import type {
+  PetDexieModel,
   BreadcrumbItemm,
   OwnerDexieModel,
-  PetDexieModel,
-} from '../../../types/types'
-import Avatar from '../../Common/Avatar'
-import CustomBreadcrumnb from '../../Common/Breadcrumb'
-import Button from '../../Common/Button'
-import Spinner from '../../Common/Spinner'
-import { ErrorFallback } from '../../Layout/ErrorFallback'
-import PageHeader from '../../Layout/PageHeader'
+} from 'types/types'
 
 import AddPetForm from './PetAddForm'
 import EditPetForm from './PetEditForm'

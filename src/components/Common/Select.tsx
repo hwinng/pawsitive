@@ -1,7 +1,7 @@
 import type { FieldValues, UseFormRegister } from 'react-hook-form'
 import styled from 'styled-components'
 
-import type { Option } from '../../types/types'
+import type { Option } from 'types/types'
 
 import { InputFieldError } from './InputField'
 

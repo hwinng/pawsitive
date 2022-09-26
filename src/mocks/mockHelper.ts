@@ -7,9 +7,9 @@ import {
   catBreeds,
   dogBreeds,
   petSizes,
-} from '../constants/pet'
-import { PetType } from '../types/enum'
-import type { HttpError, OwnerMswFactory } from '../types/types'
+} from 'constants/pet'
+import { PetType } from 'types/enum'
+import type { HttpError, OwnerMswFactory } from 'types/types'
 
 /**
  * Set up a seeded random number generator, so that we get

@@ -1,9 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { useAuth } from '../../hooks/useAuth'
-import Button from '../Common/Button'
-import { Logo } from '../Common/Logo'
+import Button from 'components/Common/Button'
+import { Logo } from 'components/Common/Logo'
+import { useAuth } from 'hooks/useAuth'
 
 import LoginForm from './LoginForm'
 

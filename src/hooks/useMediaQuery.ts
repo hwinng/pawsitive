@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import type { MediaQueryString } from '../types/types'
+import type { MediaQueryString } from 'types/types'
 
 function useMediaQuery(query: MediaQueryString): boolean {
   const getMatches = (query: MediaQueryString): boolean => {

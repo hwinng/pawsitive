@@ -1,6 +1,5 @@
 import { Modal as AhaModal } from '@ahaui/react'
 import * as React from 'react'
-import styled from 'styled-components'
 
 const callAll =
   (...fns: any) =>

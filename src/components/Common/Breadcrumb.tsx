@@ -1,7 +1,7 @@
 import { Breadcrumb } from '@ahaui/react'
 import React from 'react'
 
-import type { BreadcrumbItemm } from '../../types/types'
+import type { BreadcrumbItemm } from 'types/types'
 
 type BreadcrumnbProps = {
   items: BreadcrumbItemm[]

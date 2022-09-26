@@ -2,7 +2,8 @@ import sign from 'jwt-encode'
 import isEmpty from 'lodash/isEmpty'
 import { rest } from 'msw'
 
-import { dexieDb as db } from '../../db'
+import { dexieDb as db } from 'database'
+
 import type { OwnerDexieModel, PetDexieModel } from '../types/types'
 
 import { errorJson } from './mockHelper'

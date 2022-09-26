@@ -1,4 +1,4 @@
-import ErrorMessage from '../Common/ErrorMessage'
+import ErrorMessage from 'components/Common/ErrorMessage'
 
 function ErrorFallback({ error }: { error: Error }) {
   return (

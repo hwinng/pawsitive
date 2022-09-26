@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import Spinner from '../Common/Spinner'
+import Spinner from 'components/Common/Spinner'
 
 const SeedingText = styled.h3``
 const FullPageSpinner: React.FC<{ seeding?: boolean }> = ({ seeding }) => {

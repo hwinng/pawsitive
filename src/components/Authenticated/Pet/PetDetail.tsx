@@ -5,25 +5,25 @@ import React from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 
-import { useAsync } from '../../../hooks/useAsync'
-import { useAppDispatch, useAppSelector } from '../../../store/hooks'
-import { fetchOwners, selectAllOwners } from '../../../store/ownerSlice'
+import RowItem from 'components/Authenticated/RowItem'
+import CustomBreadcrumnb from 'components/Common/Breadcrumb'
+import Button from 'components/Common/Button'
+import Spinner from 'components/Common/Spinner'
+import { ErrorFallback } from 'components/Layout/ErrorFallback'
+import PageHeader from 'components/Layout/PageHeader'
+import { useAsync } from 'hooks/useAsync'
+import { useAppSelector, useAppDispatch } from 'store/hooks'
+import { selectAllOwners, fetchOwners } from 'store/ownerSlice'
 import {
-  fetchPetDetail,
-  removePet,
   selectPet,
   selectPetById,
+  fetchPetDetail,
   updatePet,
-} from '../../../store/petSlice'
-import { Status } from '../../../types/enum'
-import type { BreadcrumbItemm, OwnerDexieModel } from '../../../types/types'
-import { client } from '../../../utils/client-api'
-import CustomBreadcrumnb from '../../Common/Breadcrumb'
-import Button from '../../Common/Button'
-import Spinner from '../../Common/Spinner'
-import { ErrorFallback } from '../../Layout/ErrorFallback'
-import PageHeader from '../../Layout/PageHeader'
-import RowItem from '../RowItem'
+  removePet,
+} from 'store/petSlice'
+import { Status } from 'types/enum'
+import type { OwnerDexieModel, BreadcrumbItemm } from 'types/types'
+import { client } from 'utils/clientApi'
 
 import EditPetForm from './PetEditForm'
 

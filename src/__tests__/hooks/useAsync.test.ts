@@ -1,9 +1,11 @@
 /* eslint-disable prettier/prettier */
 import { renderHook, act } from '@testing-library/react'
 
-import { useAsync } from '../../hooks/useAsync'
-import { Status } from '../../types/enum'
-import type { DeferredPromise, HttpError } from '../../types/types';
+
+
+import { useAsync } from './../../hooks/useAsync';
+import { Status } from './../../types/enum'
+import type { DeferredPromise, HttpError } from './../../types/types';
 
 let errorLog: jest.SpyInstance
 

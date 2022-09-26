@@ -4,9 +4,9 @@ import {
   createAsyncThunk,
 } from '@reduxjs/toolkit'
 
-import { Status } from '../types/enum'
-import type { OwnerDexieModel } from '../types/types'
-import { client } from '../utils/client-api'
+import { Status } from 'types/enum'
+import type { OwnerDexieModel } from 'types/types'
+import { client } from 'utils/clientApi'
 
 import type { RootState } from './index'
 

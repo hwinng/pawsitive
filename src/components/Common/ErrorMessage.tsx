@@ -1,6 +1,6 @@
 import React from 'react'
 
-import * as colors from '../../constants/colors'
+import * as colors from 'constants/colors'
 
 export const errorMessageVariants = {
   stacked: { display: 'block' },

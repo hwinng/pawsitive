@@ -1,12 +1,8 @@
 import { nanoid } from '@reduxjs/toolkit'
 
-import { dexieDb } from '../../db'
-import {
-  createOwnerData,
-  createPetData,
-  serializePet,
-} from '../mocks/mockHelper'
-import type { OwnerDexieModel, PetDexieModel } from '../types/types'
+import { dexieDb } from 'database'
+import { createOwnerData, createPetData, serializePet } from 'mocks/mockHelper'
+import type { OwnerDexieModel, PetDexieModel } from 'types/types'
 
 import { syncLocalStorage } from './syncLocalStorage'
 
@@ -20,6 +16,7 @@ async function bootstrapAppData(
   if (syncLocalStorage('seeded')) {
     return
   }
+  console.log('seeding data')
 
   // create owner sample data
   let owners: OwnerDexieModel[] = []

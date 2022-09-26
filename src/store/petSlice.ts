@@ -4,9 +4,9 @@ import {
   createAsyncThunk,
 } from '@reduxjs/toolkit'
 
-import { HttpMethod, Status } from '../types/enum'
-import type { PetDexieModel } from '../types/types'
-import { client } from '../utils/client-api'
+import { HttpMethod, Status } from 'types/enum'
+import type { PetDexieModel } from 'types/types'
+import { client } from 'utils/clientApi'
 
 import { fetchOwnerDetail } from './ownerSlice'
 

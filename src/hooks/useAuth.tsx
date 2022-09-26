@@ -1,12 +1,12 @@
 import React from 'react'
-import { ErrorFallback } from '../components/Layout/ErrorFallback'
 
-import { FullPageSpinner } from '../components/Layout/FullPageSpinner'
-import { useAsync } from '../hooks/useAsync'
-import { HttpMethod } from '../types/enum'
-import type { ClientHttpConfig } from '../types/types'
-import { client } from '../utils/client-api'
-import { syncLocalStorage } from '../utils/syncLocalStorage'
+import { ErrorFallback } from 'components/Layout/ErrorFallback'
+import { FullPageSpinner } from 'components/Layout/FullPageSpinner'
+import { useAsync } from 'hooks/useAsync'
+import { HttpMethod } from 'types/enum'
+import type { ClientHttpConfig } from 'types/types'
+import { client } from 'utils/clientApi'
+import { syncLocalStorage } from 'utils/syncLocalStorage'
 
 export type AuthState = {
   username: string
